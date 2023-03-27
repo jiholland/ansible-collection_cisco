@@ -1,0 +1,50 @@
+---
+# tasks file for tacacs
+
+- name: configure_cisco.nxos.nxos | Set tacacs server hosts.
+  when: not ansible_check_mode
+  block:
+
+    - name: configure_cisco.nxos.nxos | Set primary tacacs server host.
+      cisco.nxos.nxos_aaa_server_host:
+        server_type: tacacs
+        address: "{{ tacacs_server_primary_ip }}"
+        key: "{{ tacacs_server_key }}"
+        state: present
+      notify: Save nxos.
+
+    - name: configure_cisco.nxos.nxos | Configure secondary tacacs server host.
+      cisco.nxos.nxos_aaa_server_host:
+        server_type: tacacs
+        address: "{{ tacacs_server_secondary_ip }}"
+        key: "{{ tacacs_server_key }}"
+        state: present
+      notify: Save nxos.
+
+
+- name: configure_cisco.nxos.nxos | Set tacacs server group.
+  cisco.nxos.nxos_config:
+    lines:
+      - server {{ tacacs_server_primary_ip }}
+      - server {{ tacacs_server_secondary_ip }}
+    parents:
+      - aaa group server tacacs+ {{ tacacs_server_group }}
+  notify: Save nxos.
+
+- name: configure_cisco.nxos.nxos | Test authentication.
+  tags: test_authentication
+  cisco.nxos.nxos_command:
+    commands:
+      - test aaa group {{ tacacs_server_group }} {{ ansible_user }} {{ ansible_password }}
+  when: not ansible_check_mode
+  register: tacacs_output
+  failed_when: tacacs_output['stdout'] is not search('user has been authenticated')
+  changed_when: false
+
+- name: configure_cisco.nxos.nxos | Configure tacacs authentication and authorization.
+  cisco.nxos.nxos_config:
+    lines:
+      - aaa authentication login default group {{ tacacs_server_group }} local
+      - aaa authentication login console group {{ tacacs_server_group }} local
+      - aaa authentication login error-enable
+  notify: Save nxos.

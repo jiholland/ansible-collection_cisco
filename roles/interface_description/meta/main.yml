@@ -1,0 +1,25 @@
+---
+galaxy_info:
+  role_name: interface_description
+  author: Jørn Ivar Holland
+  description: Set interface description based on CDP and LLDP.
+  license: BSD-3-Clause
+  min_ansible_version: '2.9'
+  platforms:
+    - name: IOS
+      versions:
+        - all
+    - name: NXOS
+      versions:
+        - all
+  galaxy_tags:
+    - networking
+    - cisco
+    - catalyst
+    - nexus
+    - interface
+    - cdp
+    - lldp
+
+
+dependencies: []

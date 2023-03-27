@@ -1,0 +1,24 @@
+---
+galaxy_info:
+  role_name: upgrade
+  standalone: true
+  author: Jørn Ivar Holland
+  description: Upgrade OS (or check/upload/schedule) to compliant version.
+  license: BSD-3-Clause
+  min_ansible_version: '2.11'
+  platforms:
+    - name: IOS
+      version:
+        - all
+    - name: NXOS
+      version:
+        - all
+  galaxy_tags:
+    - networking
+    - cisco
+    - catalyst
+    - nexus
+    - upgrade
+
+
+dependencies: []

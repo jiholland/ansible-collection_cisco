@@ -1,0 +1,10 @@
+---
+# tasks file for dns.
+
+- name: configure_cisco.ios.ios | Set hostname and domain-name and disable dns-lookup.
+  cisco.ios.ios_system:
+    hostname: "{{ inventory_hostname }}"
+    domain_name: "{{ dns_domain }}"
+    lookup_enabled: false
+    state: present
+  notify: Save ios.

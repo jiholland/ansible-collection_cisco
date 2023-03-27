@@ -1,0 +1,10 @@
+---
+# tasks file for dns
+
+- name: configure_cisco.nxos.nxos | Set hostname and domain-name and disable dns-lookup.
+  cisco.nxos.nxos_system:
+    hostname: "{{ inventory_hostname }}"
+    domain_name: "{{ dns_domain }}"
+    domain_lookup: false
+    state: present
+  notify: Save nxos.

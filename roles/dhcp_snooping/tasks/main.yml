@@ -1,0 +1,9 @@
+---
+# tasks file for dhcp_snooping
+
+- name: Include OS-specific tasks.
+  ansible.builtin.include_tasks:
+    file: configure_{{ ansible_network_os }}.yml
+  when:
+    - network_function in ['access', 'robo']
+    - "'3850' not in inventory_hostname"

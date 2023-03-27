@@ -1,0 +1,10 @@
+---
+# tasks file for backup
+
+- name: backup_cisco.ios.ios | Backup running-config to local directory.
+  cisco.ios.ios_config:
+    backup: true
+    backup_options:
+      filename: "{{ inventory_hostname }}_{{ backup_time['stdout'] }}.txt"
+      dir_path: "{{ backup_git_dest }}/{{ backup_time['stdout'] }}"
+  notify: Push to git.

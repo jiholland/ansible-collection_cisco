@@ -1,0 +1,44 @@
+---
+# tasks file for upgrade
+
+- name: upload | Upload image.
+  when: ansible_network_os == 'cisco.ios.ios'
+  block:
+
+    - name: upload | Remove inactive software.
+      cisco.ios.ios_command:
+        commands:
+          - command: install remove inactive
+            prompt: Do you want to remove the above files
+            answer: y
+      vars:
+        ansible_command_timeout: 1800
+      when: ansible_facts['net_iostype'] == 'IOS-XE'
+
+    - name: upload | Ensure maximum blocksize for TFTP.
+      cisco.ios.ios_config:
+        lines:
+          - ip tftp blocksize 8192
+
+    - name: upload | Upload compliant OS.
+      cisco.ios.ios_command:
+        commands:
+          - command: copy tftp://{{ upgrade_tftp_server }}/{{ upgrade_compliant_image }} flash:/
+            prompt: Destination filename
+            answer: "\r"
+      vars:
+        ansible_command_timeout: 3600
+
+
+- name: upload | Upload image.
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  block:
+
+    - name: upload | Upload compliant OS.
+      cisco.nxos.nxos_file_copy:
+        file_pull: true
+        remote_file: /var/lib/tftpboot/{{ upgrade_compliant_image }}
+        remote_scp_server: "{{ upgrade_tftp_server }}"
+        remote_scp_server_user: "{{ ansible_user }}"
+        remote_scp_server_password: "{{ ansible_password }}"
+        vrf: management

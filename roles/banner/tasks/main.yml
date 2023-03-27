@@ -1,0 +1,11 @@
+---
+# tasks file for banner
+
+- name: Gather facts from localhost.
+  ansible.builtin.setup:
+  delegate_to: localhost
+  run_once: true
+
+- name: Include OS-specific tasks.
+  ansible.builtin.include_tasks:
+    file: configure_{{ ansible_network_os }}.yml

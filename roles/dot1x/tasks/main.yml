@@ -1,0 +1,7 @@
+---
+# tasks file for dot1x
+
+- name: Include OS-specific tasks.
+  ansible.builtin.include_tasks:
+    file: configure_{{ ansible_network_os }}.yml
+  when: network_function == 'access'

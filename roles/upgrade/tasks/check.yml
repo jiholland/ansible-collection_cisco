@@ -1,0 +1,63 @@
+---
+# tasks file for upgrade
+
+- name: check | Set compliant OS version and image as facts.
+  ansible.builtin.set_fact:
+    upgrade_compliant_version: "{{ upgrade_item['compliant_version'] }}"
+    upgrade_compliant_image: "{{ upgrade_item['compliant_image'] }}"
+  when:
+    - ansible_facts['net_system'] == upgrade_item['system']
+    - ansible_facts['net_model'] is regex( upgrade_item['model'] )
+  loop: "{{ upgrade_compliance }}"
+  loop_control:
+    loop_var: upgrade_item
+    label: Compliant version {{ upgrade_item['compliant_version'] }}
+
+- name: check | Assert that network-device is supported by playbook.
+  ansible.builtin.assert:
+    that: upgrade_compliant_version is defined
+    fail_msg: "{{ ansible_facts['net_model'] }} is not supported by this playbook."
+    quiet: true
+
+- name: check | Assert compliance.
+  ansible.builtin.assert:
+    that: ansible_net_version == upgrade_compliant_version
+    msg: Running {{ ansible_facts['net_version'] }} --> Compliant {{ upgrade_compliant_version }}
+    quiet: true
+  when: ansible_check_mode
+
+
+- name: check | Check if compliant image is present in flash.
+  when:
+    - not ansible_check_mode
+    - ansible_facts['net_version'] != upgrade_compliant_version
+    - ansible_network_os == 'cisco.ios.ios'
+  block:
+
+    - name: check | Check if the compliant image is present in flash.
+      cisco.ios.ios_command:
+        commands:
+          - "show flash: | include {{ upgrade_compliant_image }}"
+      register: upgrade_flash_output
+
+    - name: check | Set result as fact.
+      ansible.builtin.set_fact:
+        upgrade_flash: "{{ upgrade_flash_output['stdout'][0] }}"
+
+
+- name: check | Check if compliant image is present in bootflash.
+  when:
+    - not ansible_check_mode
+    - ansible_facts['net_version'] != upgrade_compliant_version
+    - ansible_network_os == 'cisco.nxos.nxos'
+  block:
+
+    - name: check | Check if the compliant image is present in bootflash.
+      cisco.nxos.nxos_command:
+        commands:
+          - "dir bootflash: | include {{ upgrade_compliant_image }}"
+      register: upgrade_flash_output
+
+    - name: check | Set result as fact.
+      ansible.builtin.set_fact:
+        upgrade_flash: "{{ upgrade_flash_output['stdout'][0] }}"

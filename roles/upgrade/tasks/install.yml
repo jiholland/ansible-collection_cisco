@@ -1,0 +1,110 @@
+---
+# tasks file for upgrade
+
+- name: install | Install IOS.
+  when:
+    - ansible_network_os == 'cisco.ios.ios'
+    - ansible_facts['net_iostype'] == 'IOS'
+  block:
+
+    - name: install | Set boot variable. Copy running-config startup-config.
+      cisco.ios.ios_config:
+        lines:
+          - boot system flash:{{ upgrade_compliant_image }}
+        save_when: always
+
+    - name: install | Install compliant IOS and reboot.
+      cisco.ios.ios_command:
+        commands:
+          - command: reload reason Upgrade {{ ansible_facts['net_system'] }} to {{ upgrade_compliant_version }}
+            prompt: Proceed with reload
+            answer: "\r"
+      register: upgrade_installed
+
+    - name: install | Wait for device to reboot.
+      ansible.builtin.wait_for_connection:
+        delay: 60
+        timeout: 1800
+
+
+- name: install | Install IOS-XE.
+  when:
+    - ansible_network_os == 'cisco.ios.ios'
+    - ansible_facts['net_iostype'] == 'IOS-XE'
+  block:
+
+    - name: install | Set boot variable and enable auto-boot. Copy running-config startup-config.
+      cisco.ios.ios_config:
+        lines:
+          - no boot system all
+          - boot system flash:packages.conf
+          - no boot manual
+        save_when: always
+
+    - name: install | Install compliant OS and reboot.
+      cisco.ios.ios_command:
+        commands:
+          - install add file flash:{{ upgrade_compliant_image }} activate commit prompt-level none
+      vars:
+        ansible_command_timeout: 3600
+      register: upgrade_installed
+
+  rescue:
+
+    - name: install | Reset the connection.
+      ansible.builtin.meta: reset_connection
+
+  always:
+
+    - name: install | Wait for device to reboot.
+      ansible.builtin.wait_for_connection:
+        delay: 90
+        timeout: 600
+
+
+- name: install | Install NXOS.
+  when: ansible_network_os == 'cisco.nxos.nxos'
+  block:
+
+    - name: install | Copy running-config startup-config.
+      cisco.nxos.nxos_config:
+        save_when: always
+
+    - name: install | Disruptively install compliant OS.
+      cisco.nxos.nxos_command:
+        commands:
+          - install all nxos bootflash:{{ upgrade_compliant_image }} non-interruptive
+      vars:
+        ansible_command_timeout: 3600
+      register: upgrade_installed
+
+  rescue:
+
+    - name: install | Reset the connection.
+      ansible.builtin.meta: reset_connection
+
+  always:
+
+    - name: install | Wait for device to reboot.
+      ansible.builtin.wait_for_connection:
+        delay: 90
+        timeout: 600
+
+
+- name: install | Assert the upgrade.
+  when: upgrade_installed is defined
+  block:
+
+    - name: install | Gather facts.
+      cisco.ios.ios_facts:
+        gather_subset: min
+      until: not upgrade_result.failed
+      retries: 5
+      delay: 10
+      register: upgrade_result
+
+    - name: install | Assert that the upgrade succeeded.
+      ansible.builtin.assert:
+        that: ansible_facts['net_version'] == upgrade_compliant_version
+        fail_msg: "Running: {{ ansible_facts['net_version'] }} --> Compliant: {{ upgrade_compliant_version }}"
+        quiet: true

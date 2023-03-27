@@ -1,0 +1,24 @@
+---
+galaxy_info:
+  role_name: backup
+  standalone: true
+  author: Jørn Ivar Holland
+  description: Backup running-configuration to git repository.
+  license: BSD-3-Clause
+  min_ansible_version: '2.11'
+  platforms:
+    - name: IOS
+      versions:
+        - all
+    - name: NXOS
+      versions:
+        - all
+  galaxy_tags:
+    - networking
+    - backup
+    - cisco
+    - catalyst
+    - nexus
+
+
+dependencies: []

@@ -1,0 +1,16 @@
+---
+# defaults file for backup
+
+backup_git_repo: git@github.com:changme.git
+backup_git_dest: /tmp/ansible-backup
+backup_git_version: main
+backup_git_accept_newhostkey: true
+backup_git_config:
+  - name: user.name
+    value: "{{ ansible_user | default('tower') }}"
+  - name: user.email
+    value: "{{ ansible_user | default('tower') }}@changeme.com"
+
+backup_cron_weekday: '0'  # Sunday
+backup_cron_hour: '2'
+backup_cron_minute: '0'

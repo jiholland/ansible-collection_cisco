@@ -1,0 +1,10 @@
+---
+# tasks file for backup
+
+- name: backup_cisco.nxos.nxos | Backup running-config to local directory.
+  cisco.nxos.nxos_config:
+    backup: true
+    backup_options:
+      filename: "{{ inventory_hostname }}_{{ backup_time['stdout'] }}.txt"
+      dir_path: "{{ backup_git_dest }}/{{ backup_time['stdout'] }}"
+  notify: Push to git.

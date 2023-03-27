@@ -1,0 +1,38 @@
+---
+# tasks file for upgrade
+
+- name: Gather facts.
+  tags: always
+  cisco.ios.ios_facts:
+    gather_subset: min
+
+- name: Check compliance.
+  tags: upload
+  ansible.builtin.include_tasks:
+    file: check.yml
+    apply:
+      tags: upload
+
+- name: Upload compliant OS to target.
+  tags: upload
+  ansible.builtin.include_tasks:
+    file: upload.yml
+    apply:
+      tags: upload
+  when:
+    - not ansible_check_mode
+    - ansible_facts['net_version'] != upgrade_compliant_version
+    - upgrade_compliant_image not in upgrade_flash
+
+- name: Install compliant OS.
+  ansible.builtin.include_tasks:
+    file: install.yml
+  when:
+    - not ansible_check_mode
+    - ansible_facts['net_version'] != upgrade_compliant_version
+
+- name: Schedule the upgrade.
+  tags: [never, schedule]
+  ansible.builtin.import_tasks: schedule_upgrade.yml
+  delegate_to: localhost
+  run_once: true

@@ -1,0 +1,25 @@
+---
+galaxy_info:
+  role_name: dns
+  author: Jørn Ivar Holland
+  description: Ensure DNS.
+  license: BSD-3-Clause
+  min_ansible_version: '2.11'
+  platforms:
+    - name: IOS
+      versions:
+        - all
+    - name: NXOS
+      versions:
+        - all
+  galaxy_tags:
+    - networking
+    - cisco
+    - catalyst
+    - nexus
+    - system
+    - hostname
+    - domain
+
+
+dependencies: []
