@@ -5,7 +5,7 @@ This collection includes helpful Ansible roles and content to help with Cisco ne
 Roles included in this collection (click on the link to see the role's README and documentation):
 
   - `jiholland.cisco.backup`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/backup/README.md))
-  - `jiholland.cisco.banner`([documentation](https://github.com:/iholland/ansible-collection_cisco/blob/main/roles/banner/README.md))
+  - `jiholland.cisco.banner`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/banner/README.md))
   - `jiholland.cisco.dhcp_snooping`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/dns/README.md))
   - `jiholland.cisco.dns`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/dns/README.md))
   - `jiholland.cisco.dot1x`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/dns/README.md))
