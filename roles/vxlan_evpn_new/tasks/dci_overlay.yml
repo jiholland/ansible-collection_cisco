@@ -1,0 +1,98 @@
+---
+# tasks file for vxlan_evpn
+
+- name: dci_overlay | Set multisite ID for fabric. Ensure delay-restore is 300 seconds and advertise pip.
+  cisco.nxos.nxos_config:
+    lines:
+      - delay-restore time 300
+    parents:
+      - evpn multisite border-gateway {{ bgp_asn }}
+  notify: Save nxos.
+
+- name: dci_overlay | Add multisite VIP VTEP loopback to NVE-interface.
+  cisco.nxos.nxos_vxlan_vtep:
+    interface: nve1
+    multisite_border_gateway_interface: "{{ vxlan_evpn_dci_loopback }}"
+    state: present
+  notify: Save nxos.
+
+- name: dci_overlay | Configure remote border-leafs as neighbors. Ensure peer-type is fabric-external. Increase ttl for eBGP.  # since using loopback as source.
+  cisco.nxos.nxos_bgp_global:
+    config:
+      as_number: "{{ bgp_asn }}"
+      router_id: "{{ rid_ip }}"
+      neighbors:
+        - neighbor_address: "{{ hostvars[vxlan_evpn_item]['rid_ip'] }}"
+          remote_as: "{{ hostvars[vxlan_evpn_item]['bgp_asn'] }}"
+          description: "{{ hostvars[vxlan_evpn_item]['inventory_hostname'] }}"
+          update_source: "{{ vxlan_evpn_rid_loopback }}"
+          peer_type: fabric-external
+          ebgp_multihop: 2
+    state: merged
+  when:
+    - hostvars[vxlan_evpn_item]['network_function'] == 'border-leaf'
+    - hostvars[vxlan_evpn_item]['bgp_asn'] != bgp_asn
+  loop: "{{ vxlan_evpn_bgp_neighbors }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: BGP neighbor {{ hostvars[vxlan_evpn_item]['inventory_hostname'] }}
+  notify: Save nxos.
+
+- name: dci_overlay | Configure EVPN address-family for BGP neighbors.
+  cisco.nxos.nxos_bgp_neighbor_address_family:
+    config:
+      as_number: "{{ bgp_asn }}"
+      neighbors:
+        - neighbor_address: "{{ hostvars[vxlan_evpn_item]['rid_ip'] }}"
+          address_family:
+            - afi: l2vpn
+              safi: evpn
+              send_community:
+                both: true
+              rewrite_evpn_rt_asn: true
+    state: merged
+  when:
+    - hostvars[vxlan_evpn_item]['network_function'] == 'border-leaf'
+    - hostvars[vxlan_evpn_item]['bgp_asn'] != bgp_asn
+  loop: "{{ vxlan_evpn_bgp_neighbors }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: BGP neighbor {{ hostvars[vxlan_evpn_item]['inventory_hostname'] }}
+  notify: Save nxos.
+
+- name: dci_overlay | Ensure dci-tracking on fabric-external interfaces.
+  cisco.nxos.nxos_l3_interfaces:
+    config:
+      - name: "{{ vxlan_evpn_item.name }}"
+        evpn_multisite_tracking: dci-tracking
+    state: merged
+  loop: "{{ dci_interfaces }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: Interface {{ vxlan_evpn_item.name }}
+  notify: Save nxos.
+
+- name: dci_overlay | Ensure fabric-tracking on fabric-internal interfaces.
+  cisco.nxos.nxos_l3_interfaces:
+    config:
+      - name: "{{ vxlan_evpn_item.name }}"
+        evpn_multisite_tracking: fabric-tracking
+    state: merged
+  when: "'ethernet' in vxlan_evpn_item.name | lower"
+  loop: "{{ vxlan_evpn_fabric_interfaces }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: Interface {{ vxlan_evpn_item.name }}
+  notify: Save nxos.
+
+- name: dci_overlay | Ensure EVPN multisite storm suppression for DCI interfaces.
+  cisco.nxos.nxos_config:
+    lines:
+      - evpn storm-control {{ vxlan_evpn_item }} level 5
+  loop:
+    - unicast
+    - multicast
+    - broadcast
+  loop_control:
+    loop_var: vxlan_evpn_item
+  notify: Save nxos.
