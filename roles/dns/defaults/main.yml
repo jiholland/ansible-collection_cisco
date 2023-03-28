@@ -1,7 +1,0 @@
----
-# defaults file for dns
-
-dns_domain: telen.no
-
-dns_server_primary: 8.8.8.8
-dns_server_secondary: 8.8.4.4
