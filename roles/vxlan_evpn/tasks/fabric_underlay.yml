@@ -54,7 +54,7 @@
             secondary: true
             tag: "{{ vxlan_evpn_item.tag | default(omit) }}"
     state: merged
-  when: vxlan_evpn_item.secondary_ip is defined
+  when: vpc_domain is defined
   loop: "{{ vxlan_evpn_fabric_interfaces }}"
   loop_control:
     loop_var: vxlan_evpn_item
@@ -138,7 +138,7 @@
 
 
 - name: fabric_underlay | Use vPC Peer-link as underlay backup path.  # Required for vPC.
-  when: nve_infra_ip is defined
+  when: vpc_domain is defined
   block:
 
     - name: fabric_underlay | Define a non-VXLAN enabled VLAN as backup routed path.
