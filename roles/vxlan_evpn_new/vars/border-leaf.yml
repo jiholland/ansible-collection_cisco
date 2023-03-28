@@ -1,0 +1,23 @@
+---
+# vars file for vxlan_evpn
+
+vxlan_evpn_rmap_redist_direct_name: RMAP-REDIST-DIRECT
+vxlan_evpn_rmap_redist_direct_tag: 54321
+
+vxlan_evpn_fabric_interfaces:
+  - name: "{{ vxlan_evpn_rid_loopback }}"
+    description: "*** RID AND OSPF/BGP-PEERING ***"
+    ip: "{{ hostvars[inventory_hostname]['rid_ip'] }}/32"
+    tag: "{{ vxlan_evpn_rmap_redist_direct_tag }}"
+  - name: "{{ vxlan_evpn_vtep_loopback }}"
+    description: "*** NVE INTERFACE (PIP VTEP) ***"
+    ip: "{{ hostvars[inventory_hostname]['vtep_ip'] }}/32"
+    secondary_ip: "{{ hostvars[inventory_hostname]['vtep_vpc_vip'] }}/32"  # Required for vPC
+    tag: "{{ vxlan_evpn_rmap_redist_direct_tag }}"
+  - name: "{{ vxlan_evpn_dci_loopback }}"
+    description: "*** MULTI-SITE INTERFACE (VIP VTEP) ***"
+    ip: "{{ hostvars[inventory_hostname]['dci_vip'] }}/32"
+    tag: "{{ vxlan_evpn_rmap_redist_direct_tag }}"
+    pim_sparse: false
+  - name: Ethernet1/7  # to RR (spine)
+  - name: Ethernet1/8  # to RR (spine)

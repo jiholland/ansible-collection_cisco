@@ -1,0 +1,13 @@
+---
+# vars file for vxlan_evpn
+
+vxlan_evpn_fabric_interfaces:
+  - name: "{{ vxlan_evpn_rid_loopback }}"
+    description: "*** RID AND OSPF/BGP-PEERING ***"
+    ip: "{{ hostvars[inventory_hostname]['rid_ip'] }}/32"
+  - name: "{{ vxlan_evpn_vtep_loopback }}"
+    description: "*** NVE INTERFACE (PIP VTEP) ***"
+    ip: "{{ hostvars[inventory_hostname]['vtep_ip'] }}/32"
+    secondary_ip: "{{ (hostvars[inventory_hostname]['vtep_vpc_vip'] is defined) | ternary(hostvars[inventory_hostname]['vtep_vpc_vip'], omit) }}/32"
+  - name: Ethernet1/51  # to RR (spine)
+  - name: Ethernet1/52  # to RR (spine)

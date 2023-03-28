@@ -1,0 +1,109 @@
+---
+# tasks file for vxlan_evpn
+
+- name: Assert that ansible_network_os is cisco.nxos.nxos.
+  tags: always
+  ansible.builtin.assert:
+    that: ansible_network_os == 'cisco.nxos.nxos'
+    msg: ansible_network_os must be cisco.nxos.nxos
+    quiet: true
+
+- name: Include function-specific variables.
+  tags: always
+  ansible.builtin.include_vars:
+    file: "{{ network_function }}.yml"
+
+- name: Enable features.
+  tags: fabric_underlay, fabric_overlay
+  cisco.nxos.nxos_feature:
+    feature: "{{ vxlan_evpn_item }}"
+    state: enabled
+  loop: "{{ vxlan_evpn_features }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+
+
+- name: Configure fabric underlay.
+  tags: fabric_underlay
+  ansible.builtin.include_tasks:
+    file: fabric_underlay.yml
+    apply:
+      tags: fabric_underlay
+
+- name: Configure fabric overlay.
+  tags: fabric_overlay
+  ansible.builtin.include_tasks:
+    file: fabric_overlay.yml
+    apply:
+      tags: fabric_overlay
+
+- name: Configure DCI.
+  when: network_function == 'border-leaf'
+  block:
+
+    - name: Configure DCI underlay.
+      tags: dci_underlay
+      ansible.builtin.include_tasks:
+        file: dci_underlay.yml
+        apply:
+          tags: dci_underlay
+
+    - name: Configure DCI overlay.
+      tags: dci_overlay
+      ansible.builtin.include_tasks:
+        file: dci_overlay.yml
+        apply:
+          tags: dci_overlay
+
+    - name: Configure DCI encryption.
+      tags: dci_encryption
+      ansible.builtin.include_tasks:
+        file: dci_encryption.yml
+        apply:
+          tags: dci_encryption
+
+- name: Add host-segments to VTEPs.
+  when:
+    - not ansible_check_mode
+    - network_function in ['leaf', 'border-leaf']
+  block:
+
+    - name: Clone git repo with host-segments to localhost.
+      tags: [vrf, l3, l2]
+      ansible.builtin.git:
+        repo: "{{ vxlan_evpn_segments_git_repo }}"
+        dest: "{{ vxlan_evpn_segments_git_dest }}"
+        version: "{{ vxlan_evpn_segments_git_version }}"
+        accept_newhostkey: "{{ vxlan_evpn_segments_git_accept_newhostkey }}"
+        depth: 1
+      delegate_to: localhost
+      run_once: true
+      notify: Remove git repo from localhost.
+
+    - name: Configure tenant VRFs.
+      tags: vrf
+      ansible.builtin.include_tasks:
+        file: host_vrfs.yml
+        apply:
+          tags: vrf
+
+    - name: Configure host segments with distributed anycast gateway.
+      tags: l3
+      ansible.builtin.include_tasks:
+        file: host_segments_l3.yml
+        apply:
+          tags: l3
+
+    - name: Configure host segments without distributed anycast gateway.
+      tags: l2
+      ansible.builtin.include_tasks:
+        file: host_segments_l2.yml
+        apply:
+          tags: l2
+
+- name: Verify fabric.
+  tags: verify
+  ansible.builtin.include_tasks:
+    file: verify_fabric.yml
+    apply:
+      tags: verify

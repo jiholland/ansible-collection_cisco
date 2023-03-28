@@ -1,0 +1,197 @@
+---
+# tasks file for vxlan_evpn
+
+- name: fabric_underlay | Create and enable L3 loopback fabric interfaces. Ensure interface-description.
+  cisco.nxos.nxos_interfaces:
+    config:
+      - name: "{{ vxlan_evpn_item.name }}"
+        description: "{{ vxlan_evpn_item.description }}"
+        enabled: true
+    state: merged
+  when: "'loopback' in vxlan_evpn_item.name"
+  loop: "{{ vxlan_evpn_fabric_interfaces }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: "{{ vxlan_evpn_item.name }}"
+  notify: Save nxos.
+
+- name: fabric_underlay | Enable and set physical fabric interfaces in L3 mode. Ensure jumbo MTU.
+  cisco.nxos.nxos_interfaces:
+    config:
+      - name: "{{ vxlan_evpn_item.name }}"
+        mode: layer3
+        mtu: "{{ vxlan_evpn_mtu }}"
+        enabled: true
+    state: merged
+  when: "'Ethernet' in vxlan_evpn_item.name"
+  loop: "{{ vxlan_evpn_fabric_interfaces }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: "{{ vxlan_evpn_item.name }}"
+  notify: Save nxos.
+
+- name: fabric_underlay | Assign IP address and tag to L3 loopback fabric interfaces.
+  cisco.nxos.nxos_l3_interfaces:
+    config:
+      - name: "{{ vxlan_evpn_item.name }}"
+        ipv4:
+          - address: "{{ vxlan_evpn_item.ip }}"
+            tag: "{{ vxlan_evpn_item.tag | default(omit) }}"
+    state: merged
+  when: vxlan_evpn_item.ip is defined
+  loop: "{{ vxlan_evpn_fabric_interfaces }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: "{{ vxlan_evpn_item.name }}"
+  notify: Save nxos.
+
+- name: fabric_underlay | Assign secondary IP address (anycast) to loopback fabric interface used for VXLAN VTEP.  # Required for vPC.
+  cisco.nxos.nxos_l3_interfaces:
+    config:
+      - name: "{{ vxlan_evpn_item.name }}"
+        ipv4:
+          - address: "{{ vxlan_evpn_item.secondary_ip }}"
+            secondary: true
+            tag: "{{ vxlan_evpn_item.tag | default(omit) }}"
+    state: merged
+  when: vxlan_evpn_item.secondary_ip is defined
+  loop: "{{ vxlan_evpn_fabric_interfaces }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: "{{ vxlan_evpn_item.name }}"
+  notify: Save nxos.
+
+- name: fabric_underlay | Ensure physical L3 fabric interfaces have medium p2p and IP unnumbered parameters.
+  cisco.nxos.nxos_config:
+    lines:
+      - medium p2p
+      - ip unnumbered {{ vxlan_evpn_rid_loopback }}
+    parents:
+      - interface {{ vxlan_evpn_item.name }}
+  when: "'Ethernet' in vxlan_evpn_item.name"
+  loop: "{{ vxlan_evpn_fabric_interfaces }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: "{{ vxlan_evpn_item.name }}"
+  notify: Save nxos.
+
+- name: fabric_underlay | Set OSPF Process-ID and Router-ID and log adjacency changes.
+  cisco.nxos.nxos_ospfv2:
+    config:
+      processes:
+        - process_id: "{{ vxlan_evpn_ospf_process_id }}"
+          router_id: "{{ rid_ip }}"
+          log_adjacency_changes:
+            detail: true
+    state: merged
+  notify: Save nxos.
+
+- name: fabric_underlay | Associate L3 fabric interfaces with OSFP process.
+  cisco.nxos.nxos_ospf_interfaces:
+    config:
+      - name: "{{ vxlan_evpn_item.name }}"
+        address_family:
+          - afi: ipv4
+            network: "{{ ('Ethernet' in vxlan_evpn_item.name) | ternary('point-to-point', omit) }}"
+            processes:
+              - process_id: "{{ vxlan_evpn_ospf_process_id }}"
+                area:
+                  area_id: "{{ vxlan_evpn_ospf_area_id }}"
+    state: merged
+  loop: "{{ vxlan_evpn_fabric_interfaces }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: "{{ vxlan_evpn_item.name }}"
+  notify: Save nxos.
+
+- name: fabric_underlay | Configure PIM RP in Anycast-RP set.
+  cisco.nxos.nxos_config:
+    lines:
+      - ip pim anycast-rp {{ vxlan_evpn_pim_anycast_rp_ip }} {{ hostvars[vxlan_evpn_item]['rid_ip'] }}
+  when:
+    - network_function == 'spine'
+    - hostvars[vxlan_evpn_item]['network_function'] == 'spine'
+    - hostvars[vxlan_evpn_item]['bgp_asn'] == bgp_asn
+  loop: "{{ vxlan_evpn_pim_anycast_rp_set }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+  notify: Save nxos.
+
+- name: fabric_underlay | Configure static PIM anycast RP for group range.
+  cisco.nxos.nxos_pim_rp_address:
+    rp_address: "{{ vxlan_evpn_pim_anycast_rp_ip }}"
+    group_list: "{{ vxlan_evpn_pim_group_range }}"
+    state: present
+  notify: Save nxos.
+
+- name: fabric_underlay | Ensure PIM sparse mode is running on L3 fabric interfaces.
+  cisco.nxos.nxos_pim_interface:
+    interface: "{{ vxlan_evpn_item.name }}"
+    sparse: true
+    state: present
+  when: vxlan_evpn_item.pim_sparse | default(true) is true
+  loop: "{{ vxlan_evpn_fabric_interfaces }}"
+  loop_control:
+    loop_var: vxlan_evpn_item
+    label: "{{ vxlan_evpn_item.name }}"
+  notify: Save nxos.
+
+
+- name: fabric_underlay | Use vPC Peer-link as underlay backup path.  # Required for vPC.
+  when: nve_infra_ip is defined
+  block:
+
+    - name: fabric_underlay | Define a non-VXLAN enabled VLAN as backup routed path.
+      cisco.nxos.nxos_config:
+        lines:
+          - system nve infra-vlans {{ vxlan_evpn_nve_infra_vlan_id }}
+      notify: Save nxos.
+
+    - name: fabric_underlay | Create VLAN for NVE-infra.
+      cisco.nxos.nxos_vlans:
+        config:
+          - vlan_id: "{{ vxlan_evpn_nve_infra_vlan_id }}"
+            name: BACKUP_VLAN_ROUTING_NVE_INFRA
+        state: merged
+      notify: Save nxos.
+
+    - name: fabric_underlay | Create SVI for NVE-infra. Ensure jumbo MTU. Ensure interface description.
+      cisco.nxos.nxos_interfaces:
+        config:
+          - name: "Vlan{{ vxlan_evpn_nve_infra_vlan_id }}"
+            description: "*** BACKUP VLAN ROUTING NVE-INFRA ***"
+            mtu: "{{ vxlan_evpn_mtu }}"
+            enabled: true
+        state: merged
+      notify: Save nxos.
+
+    - name: fabric_underlay | Set IP address on SVI for NVE-infra.
+      cisco.nxos.nxos_l3_interfaces:
+        config:
+          - name: Vlan{{ vxlan_evpn_nve_infra_vlan_id }}
+            ipv4:
+              - address: "{{ nve_infra_ip }}/24"
+            redirects: false
+        state: merged
+      notify: Save nxos.
+
+    - name: fabric_underlay | Associate NVE-infra interface with OSFP process.
+      cisco.nxos.nxos_ospf_interfaces:
+        config:
+          - name: "Vlan{{ vxlan_evpn_nve_infra_vlan_id }}"
+            address_family:
+              - afi: ipv4
+                network: point-to-point
+                processes:
+                  - process_id: "{{ vxlan_evpn_ospf_process_id }}"
+                    area:
+                      area_id: "{{ vxlan_evpn_ospf_area_id }}"
+        state: merged
+      notify: Save nxos.
+
+    - name: fabric_underlay | Ensure PIM sparse mode is running on NVE-infra interface.
+      cisco.nxos.nxos_pim_interface:
+        interface: Vlan{{ vxlan_evpn_nve_infra_vlan_id }}
+        sparse: true
+        state: present
+      notify: Save nxos.

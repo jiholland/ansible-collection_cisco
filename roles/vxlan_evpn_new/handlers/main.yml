@@ -1,0 +1,14 @@
+---
+# handlers file for vxlan_evpn
+
+- name: Save nxos.
+  cisco.nxos.nxos_config:
+    save_when: always
+  when: not ansible_check_mode
+
+- name: Remove git repo from localhost.
+  ansible.builtin.file:
+    path: "{{ vxlan_evpn_segments_git_dest }}"
+    state: absent
+  delegate_to: localhost
+  run_once: true
