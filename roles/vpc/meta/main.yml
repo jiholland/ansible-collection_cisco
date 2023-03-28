@@ -1,25 +1,20 @@
 ---
 galaxy_info:
-  role_name: dns
+  role_name: vpc
+  standalone: true
   author: Jørn Ivar Holland
-  description: Ensure DNS.
+  description: Configure a pair of Cisco Nexus devices in virtual Port Channel (vPC).
   license: BSD-3-Clause
   min_ansible_version: '2.11'
   platforms:
-    - name: IOS
-      versions:
-        - all
     - name: NXOS
       versions:
         - all
   galaxy_tags:
     - networking
     - cisco
-    - catalyst
     - nexus
-    - system
-    - hostname
-    - domain
+    - vpc
 
 
 dependencies: []

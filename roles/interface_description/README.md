@@ -23,7 +23,7 @@ Example Playbook
 ----------------
 ```yaml
 ---
-- name: Set interface description based on CDP and LLDP
+- name: Set interface description based on CDP and LLDP.
   hosts: "{{ target }}"
   gather_facts: false
 

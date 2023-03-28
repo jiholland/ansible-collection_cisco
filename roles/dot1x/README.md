@@ -34,10 +34,10 @@ Example Playbook
 ---
 - name: Configure 802.1X.
   hosts: "{{ target }}"
-  gather_facts: true
+  gather_facts: false
 
   roles:
-    - jiholland.network.dot1x
+    - jiholland.cisco.dot1x
 ```
 License
 -------
