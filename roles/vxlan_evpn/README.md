@@ -1,5 +1,5 @@
-🏭 vxlan\_evpn
-==============
+🏭 jiholland.vxlan\_evpn
+========================
 
 Configure multisite VXLAN-EVPN fabric on Cisco Nexus platform.
 
@@ -191,25 +191,23 @@ hostvars/border-leaf.yml:
 Dependencies
 ------------
 
-💿 [vpc](https://galaxy.ansible.com/jiholland/vpc)
+💿 [jiholland.vpc](https://github.com/jiholland/ansible-collection_cisco/tree/main/roles/vpc)
 
 Example Playbook
 ----------------
+```YAML
+---
+- name: Build VXLAN-EVPN fabric.
+  hosts: "{{ target }}"
+  gather_facts: false
 
-    ---
-    - name: Build VXLAN-EVPN fabric.
-      hosts: "{{ target }}"
-      gather_facts: false
+  roles:
 
-      roles:
+    - role: jiholland.cisco.vpc
+      when: vpc_domain is defined
 
-        - role: vpc
-          tags: vpc
-          when: vpc_domain is defined
-
-        - role: vxlan_evpn
-          tags: vxlan
-
+    - role: jiholland.cisco.vxlan_evpn
+```
 License
 -------
 
