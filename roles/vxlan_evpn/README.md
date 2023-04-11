@@ -147,52 +147,129 @@ Role Variables
 defaults/main.yml:
 - vxlan\_evpn\_pim\_anycast\_rp\_ip
 - vxlan\_evpn\_pim\_group\_range
-- vxlan\_evpn\_bgp\_neighbors
-- vxlan\_evpn\_nve\_infra\_vlan\_id
 - vxlan\_evpn\_dci\_macsec\_key
-- vxlan\_evpn\_features
 - vxlan\_evpn\_mtu
 - vxlan\_evpn\_ospf\_area\_id
 - vxlan\_evpn\_ospf\_process\_id
 - vxlan\_evpn\_anycast\_gw\_mac
-- vxlan\_evpn\_rid\_loopback
-- vxlan\_evpn\_vtep\_loopback
-- vxlan\_evpn\_dci\_loopback
-- vxlan\_evpn\_pim\_loopback
 - vxlan\_evpn\_rmap\_host\_svi\_name
 - vxlan\_evpn\_rmap\_host\_svi\_tag
 
-hostvars/spine.yml:
-- network\_function
-- bgp\_asn
-- rid\_ip
-- bgp\_route\_reflector: true
+Example - hostvars/SPINE-1.yml:
+```YAML
+vxlan:
+  rid:
+    if: loopback0
+    description: "*** RID AND OSPF/BGP-PEERING ***"
+    ip: 10.250.250.30
+  pim:
+    if: loopback254
+    description: "*** PIM ANYCAST RP ***"
+    anycast:
+      local: 10.254.254.1
+      remote: 10.254.254.2
+  bgp:
+    asn: 65001
+    neighbors:
+      - name: LEAF-1
+        ip: 10.250.250.32
+      - name: LEAF-2
+        ip: 10.250.250.33
+  fabric_interfaces:
+    - name: Ethernet1/1
+    - name: Ethernet1/2
+    - name: Ethernet1/3
+    - name: Ethernet1/4
+```
+Example - hostvars/LEAF-1.yml:
+```YAML
+vxlan:
+  bgp:
+    asn: 65001
+    neighbors:
+      - name: SPINE-1
+        ip: 10.250.250.30
+      - name: SPINE-2
+        ip: 10.250.250.31
+  rid:
+    description: "*** RID AND OSPF/BGP-PEERING ***"
+    if: loopback0
+    ip: 10.250.250.32
+  vtep:
+    description: "*** NVE INTERFACE (PIP VTEP) ***"
+    if: loopback1
+    ip: 10.254.250.32
+  fabric_interfaces:
+    - name: Ethernet1/51
+    - name: Ethernet1/52
+```
+Example - hostvars/bgw-1.yml:
+```YAML
+vxlan:
+  bgp:
+    asn: 65001
+    neighbors:
+      - name: SPINE-1
+        ip: 10.250.250.30
+      - name: SPINE-2
+        ip: 10.250.250.31
+  rid:
+    description: "*** RID AND OSPF/BGP-PEERING ***"
+    if: loopback0
+    ip: 10.250.250.38
+    tag: 54321
+  vtep:
+    description: "*** NVE INTERFACE (PIP VTEP) ***"
+    if: loopback1
+    ip: 10.254.250.38
+    secondary_ip: 10.254.250.40
+    tag: 54321
+  fabric_interfaces:
+    - name: Ethernet1/7
+    - name: Ethernet1/8
+  dci:
+    description: "*** MULTI-SITE INTERFACE (VIP VTEP) ***"
+    ip: 10.10.2.1
+    if: loopback100
+    tag: 54321
+    ebgp:
+      neighbors:
+        - name: BGW-3
+          ip: 10.250.250.41
+          asn: 65002
+        - name: BGW-4
+          ip: 10.250.250.42
+          asn: 65002
+    interfaces:
+      - name: Ethernet1/5
+        ip: 10.16.3.0
+        bgp_neighbor_ip: 10.16.3.1
+        bgp_neighbor_name: BGW-3
+        bgp_remote_asn: 65002
+        tag: 54321
+      - name: Ethernet1/6
+        ip: 10.16.3.2
+        bgp_neighbor_ip: 10.16.3.3
+        bgp_neighbor_name: BGW-4
+        bgp_remote_asn: 65002
+        tag: 54321
 
-hostvars/leaf.yml:
-- network\_function
-- bgp\_asn
-- rid\_ip
-
-hostvars/border-leaf.yml:
-- network\_function
-- bgp\_asn
-- rid\_ip
-- bgp\_route\_reflector: true
-- vtep\_vpc\_vip
-- nve\_infra\_ip
-- dci\_vip
-- dci\_interfaces
-  - name
-  - ip
-  - bgp\_neighbor\_ip
-  - bgp\_neighbor\_name
-  - bgp\_remote\_asn
-
-Dependencies
-------------
-
-💿 [jiholland.vpc](https://github.com/jiholland/ansible-collection_cisco/tree/main/roles/vpc)
-
+vpc:
+  domain: 1
+  role_priority: 1
+  keepalive:
+    ip_src: 10.26.5.1
+    ip_dest: 10.26.5.2
+    if: Ethernet1/48
+  peerlink:
+    lag_name: port-channel1
+    lag_members:
+      - Ethernet1/49
+      - Ethernet1/50
+  nve:
+    ip: 10.26.4.1
+    vlan: 777
+```
 Example Playbook
 ----------------
 ```YAML
@@ -204,7 +281,7 @@ Example Playbook
   roles:
 
     - role: jiholland.cisco.vpc
-      when: vpc_domain is defined
+      when: vpc is defined
 
     - role: jiholland.cisco.vxlan_evpn
 ```

@@ -18,16 +18,24 @@ defaults:
 - vpc\_native\_vlan\_id
 - vpc\_native\_vlan\_name
 
-hostvars:
-- vpc\_domain
-- vpc\_role\_priority
-- vpc\_keepalive\_ip
-- vpc\_keepalive\_ip\_peer
-- vpc\_keepalive\_if
-- vpc\_peer\_portchannel\_id
-- vpc\_peer\_portchannel\_if\_member\_1
-- vpc\_peer\_portchannel\_if\_member\_2
-
+Example - hostvars:
+```YAML
+vpc:
+  domain: 1
+  role_priority: 1
+  keepalive:
+    ip_dest: 10.16.5.1
+    ip_src: 10.16.5.2
+    if: Ethernet1/3
+  peerlink:
+    lag_name: port-channel1
+    lag_members:
+      - Ethernet1/1
+      - Ethernet1/2
+  nve:
+    ip: 10.16.4.1
+    vlan: 777
+```
 Dependencies
 ------------
 
@@ -42,7 +50,8 @@ Example Playbook
   gather_facts: false
 
   roles:
-    - jiholland.cisco.vpc
+    - role: jiholland.cisco.vpc
+      when: vpc is defined
 ```
 License
 -------

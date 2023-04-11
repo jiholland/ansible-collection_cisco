@@ -1,9 +1,6 @@
 ---
 # defaults file for vxlan_evpn
 
-vxlan_evpn_bgp_neighbors: "{{ groups['VXLAN_EVPN_FABRIC'] }}"  # Group from inventory
-vxlan_evpn_pim_anycast_rp_set: "{{ bgp_neighbors }}"
-
 vxlan_evpn_pim_anycast_rp_ip: 10.254.254.254
 vxlan_evpn_pim_group_range: 239.239.0.0/16
 
@@ -11,27 +8,12 @@ vxlan_evpn_global_mcast_group_l2: 239.239.239.239
 
 vxlan_evpn_macsec_key: abc3000000000000000000000000000000000000000000000000000000000000  # Change and encrypt with Ansible vault
 
-vxlan_evpn_nve_infra_vlan_id: 777  # For vPC.
-
-vxlan_evpn_features:
-  - ospf
-  - pim
-  - bgp
-  - nv overlay
-  - interface-vlan
-  - vn-segment-vlan-based
-
 vxlan_evpn_mtu: 9216
 
 vxlan_evpn_ospf_area_id: 0.0.0.0
 vxlan_evpn_ospf_process_id: UNDERLAY
 
 vxlan_evpn_anycast_gw_mac: 2020.DEAD.BEEF
-
-vxlan_evpn_rid_loopback: loopback0    # RID AND OSPF/BGP-PEERING
-vxlan_evpn_vtep_loopback: loopback1   # NVE INTERFACE (PIP VTEP)
-vxlan_evpn_dci_loopback: loopback100  # MULTI-SITE INTERFACE (VIP VTEP)
-vxlan_evpn_pim_loopback: loopback254  # PIM ANYCAST RP
 
 vxlan_evpn_rmap_host_svi_name: HOST-SVI
 vxlan_evpn_rmap_host_svi_tag: 12345
