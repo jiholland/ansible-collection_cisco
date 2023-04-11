@@ -30,7 +30,7 @@ ansible-galaxy collection install git@github.com:jiholland/ansible-collection_ci
   gather_facts: false
 
   roles:
-    - jiholland.cisco.backup
+    - role: jiholland.cisco.backup
       when: not ansible_check_mode
 ...
 
@@ -51,7 +51,7 @@ ansible-galaxy collection install git@github.com:jiholland/ansible-collection_ci
   roles:
 
     - role: jiholland.cisco.vpc
-      when: vpc_domain is defined
+      when: vpc is defined
 
     - role: jiholland.cisco.vxlan_evpn
 ...
