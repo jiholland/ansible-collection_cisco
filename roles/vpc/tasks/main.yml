@@ -140,6 +140,37 @@
     state: present
   notify: Save nxos.
 
+
+- name: Set STP port type to network for vPC peer link interfaces.
+  block:
+
+    - name: Ensure spanning-tree bridge assurance is enabled.
+      cisco.nxos.nxos_config:
+        lines:
+          - spanning-tree bridge assurance
+      when: not ansible_check_mode
+      notify: Save nxos.
+
+    - name: Set STP port type to network for vPC peer link Port-Channel.
+      cisco.nxos.nxos_config:
+        lines:
+          - spanning-tree port type network
+        parents:
+          - interface {{ vpc['peerlink']['lag_name'] }}
+      notify: Save nxos.
+
+    - name: Set STP port type to network for vPC peer link ethernet interfaces.
+      cisco.nxos.nxos_config:
+        lines:
+          - spanning-tree port type network
+        parents:
+          - interface {{ vpc_item }}
+      loop: "{{ vpc['peerlink']['lag_members'] }}"
+      loop_control:
+        loop_var: vpc_item
+      notify: Save nxos.
+
+
 - name: Modify the STP hello-time, forward-time and max-age time.
   cisco.nxos.nxos_config:
     lines:
