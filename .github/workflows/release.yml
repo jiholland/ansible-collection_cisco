@@ -1,0 +1,50 @@
+---
+name: release
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    env:
+      ANSIBLE_GALAXY_TOKEN: ${{ secrets.ANSIBLE_GALAXY_TOKEN }}
+      ANSIBLE_FORCE_COLOR: 1
+
+    steps:
+      - name: Check out the codebase.
+        uses: action/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Setup Python 3.
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+          cache: pip
+
+      - name: Install dependencies.
+        run: pip install ansible-core antsibull-changelog
+
+      - name: Lint changelog.
+        run: antsibull-changelog lint
+
+      - name: Generate changelog for the release.
+        run: antsibull-changelog release
+
+      - name: Update galaxy.yml.
+        run: sed "s/^version:.*/version:${{ github.ref }}/g" galaxy.yml
+
+      - name: Push changelog.
+        run: |-
+          git config --global user.name ${{ env.USER }}
+          git config --global user.email ${{ env.USER }}@icloud.com
+          git commit -am "Update changelog and galaxy.yml for new release."
+          git push
+
+      - name: Release to Ansible Galaxy.
+        run: ansible-playbook .galaxy-deploy.yml -i localhost

@@ -5,7 +5,7 @@
   cisco.nxos.nxos_feature:
     feature: macsec
     state: enabled
-  notify: Save nxos
+  notify: Save nxos.
 
 - name: dci_encryption | Configure MACsec keychain and key.
   cisco.nxos.nxos_command:
@@ -26,9 +26,9 @@
     lines:
       - macsec keychain 1 policy system-default-macsec-policy
     parents:
-      - interface {{ vxlan_evpn_item.name }}
-  loop: "{{ hostvars[inventory_hostname]['dci_interfaces'] }}"
+      - interface {{ vxlan_evpn_item['name'] }}
+  loop: "{{ vxlan['dci']['interfaces'] }}"
   loop_control:
     loop_var: vxlan_evpn_item
-    label: "{{ vxlan_evpn_item.name }}"
-  notify: Save nxos
+    label: "{{ vxlan_evpn_item['name'] }}"
+  notify: Save nxos.

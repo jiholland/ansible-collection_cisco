@@ -14,6 +14,7 @@ Role Variables
 --------------
 
 - upgrade\_tftp\_server
+- upgrade\_mgmt\_vrf
 - upgrade\_compliance:
   - system
   - model
