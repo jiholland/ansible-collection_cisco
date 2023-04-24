@@ -7,3 +7,11 @@ releases:
     fragments:
     - 1-changelog.yml
     release_date: '2023-04-11'
+  2023.14.2:
+    changes:
+      minor_changes:
+      - Added gather_subset to ansible.builtin.setup.
+      - Minor improvements to vxlan, upgrade and vpc.
+    fragments:
+    - 1-banner-lint.yml
+    release_date: '2023-04-24'

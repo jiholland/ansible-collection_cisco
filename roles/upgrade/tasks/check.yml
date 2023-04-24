@@ -19,12 +19,18 @@
     fail_msg: "{{ ansible_facts['net_model'] }} is not supported by this playbook."
     quiet: true
 
+- name: check | Print compliance.
+  ansible.builtin.debug:
+    msg: Installed {{ ansible_facts['net_system'] }} is {{ ansible_facts['net_version'] }}. Compliant version is {{ upgrade_compliant_version }}.
+    verbosity: 0
+  when: not ansible_check_mode
+
 - name: check | Assert compliance.
   ansible.builtin.assert:
-    that: ansible_net_version == upgrade_compliant_version
-    msg: Running {{ ansible_facts['net_version'] }} --> Compliant {{ upgrade_compliant_version }}
-    quiet: true
-  when: ansible_check_mode
+    that: ansible_net_version is match upgrade_compliant_version
+    success_msg: Compliant {{ ansible_facts['net_system'] }} {{ ansible_facts['net_version'] }} is installed.
+    fail_msg: Installed {{ ansible_facts['net_system'] }} is {{ ansible_facts['net_version'] }}. Upgrade to {{ upgrade_compliant_version }} is required.
+  when: ansible_check_mode | bool
 
 
 - name: check | Check if compliant image is present in flash.

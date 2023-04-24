@@ -3,6 +3,8 @@
 
 upgrade_tftp_server: 10.0.0.1
 
+upgrade_mgmt_vrf: management
+
 upgrade_compliance:
   - system: ios
     model: '^C9[3-6][0-9][0-9]'  # Catalyst 9300, 9407, 9410, 9500, 9600

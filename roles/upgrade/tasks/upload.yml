@@ -41,4 +41,4 @@
         remote_scp_server: "{{ upgrade_tftp_server }}"
         remote_scp_server_user: "{{ ansible_user }}"
         remote_scp_server_password: "{{ ansible_password }}"
-        vrf: management
+        vrf: "{{ upgrade_mgmt_vrf }}"

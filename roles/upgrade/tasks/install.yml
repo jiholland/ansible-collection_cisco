@@ -98,7 +98,7 @@
     - name: install | Gather facts.
       cisco.ios.ios_facts:
         gather_subset: min
-      until: not upgrade_result.failed
+      until: not upgrade_result['failed']
       retries: 5
       delay: 10
       register: upgrade_result
@@ -106,5 +106,5 @@
     - name: install | Assert that the upgrade succeeded.
       ansible.builtin.assert:
         that: ansible_facts['net_version'] == upgrade_compliant_version
-        fail_msg: "Running: {{ ansible_facts['net_version'] }} --> Compliant: {{ upgrade_compliant_version }}"
-        quiet: true
+        success_msg: Upgrade to {{ upgrade_compliant_version }} was successful.
+        fail_msg: Unable to upgrade. Device is running {{ ansible_facts['net_version'] }}. Expected {{ upgrade_compliant_version }}.
