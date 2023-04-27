@@ -16,4 +16,4 @@ plugins:
   strategy: {}
   test: {}
   vars: {}
-version: 2023.15.0
+version: 23.0.0
