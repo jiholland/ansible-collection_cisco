@@ -1,26 +1,9 @@
 ancestor: null
 releases:
-  2023.14.1:
-    changes:
-      minor_changes:
-      - Using antsibull to generate the changelog
-    fragments:
-    - 1-changelog.yml
-    release_date: '2023-04-11'
-  2023.14.2:
-    changes:
-      minor_changes:
-      - Added gather_subset to ansible.builtin.setup.
-      - Minor improvements to vxlan, upgrade and vpc.
-      - Various improvements and bug fixes.
-    fragments:
-    - 1-banner-lint.yml
-    - bugfixes.yml
-    release_date: '2023-04-24'
-  2023.15.0:
+  23.0.0:
     changes:
       bugfixes:
-      - Retag release for galaxy deployment.
+      - Various bugfixes and improvements.
     fragments:
-    - galaxy.yml
+    - bugfix.yml
     release_date: '2023-04-27'
