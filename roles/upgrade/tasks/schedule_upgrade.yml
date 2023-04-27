@@ -8,8 +8,8 @@
 
 - name: schedule_upgrade | Schedule upgrade.
   ansible.posix.at:
-    command: cd {{ playbook_dir }} && ansible-playbook playbook_upgrade.yml -e 'target={{ target }}'
-    count: "{{ upgrade_input.user_input }}"
+    command: cd {{ playbook_dir }} && ansible-playbook {{ upgrade_playbook_name }} -e 'target={{ target }}'
+    count: "{{ upgrade_input['user_input'] }}"
     units: minutes
     state: present
 

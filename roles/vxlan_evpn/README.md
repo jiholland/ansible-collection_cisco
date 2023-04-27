@@ -157,6 +157,11 @@ defaults/main.yml:
 
 Example - hostvars/SPINE-1.yml:
 ```YAML
+---
+# spine
+
+network_role: spine
+
 vxlan:
   rid:
     if: loopback0
@@ -183,6 +188,11 @@ vxlan:
 ```
 Example - hostvars/LEAF-1.yml:
 ```YAML
+---
+# leaf
+
+network_role: leaf
+
 vxlan:
   bgp:
     asn: 65001
@@ -205,6 +215,11 @@ vxlan:
 ```
 Example - hostvars/bgw-1.yml:
 ```YAML
+---
+# border-leaf
+
+network_role: border-leaf
+
 vxlan:
   bgp:
     asn: 65001

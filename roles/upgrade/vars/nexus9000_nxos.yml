@@ -1,0 +1,5 @@
+---
+# vars files for Cisco Nexus 9000
+
+upgrade_compliant_version: 10.2(4)
+upgrade_compliant_image: nxos64-cs.10.2.4.M.bin

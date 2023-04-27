@@ -162,7 +162,7 @@
           - tracking enable
         parents:
           - device-tracking policy IPDT_POLICY
-      when: ansible_facts['net_iostype'] == 'IOS-XE'
+      when: "'IOS-XE' is match(ansible_facts['net_iostype'])"
       notify: Save ios.
 
     - name: configure_cisco.ios.ios | Enable device-tracking.
@@ -170,7 +170,7 @@
         lines:
           - ip device tracking
       when:
-        - ansible_facts['net_iostype'] == 'IOS'
+        - "'IOS' is match(ansible_facts['net_iostype'])"
         - not ansible_check_mode
       notify: Save ios.
 
@@ -192,7 +192,7 @@
           - description 802.1X with MAB fallback
           - switchport mode access
           - no logging event link-status
-          - "{{ (ansible_facts['net_iostype'] == 'IOS-XE') | ternary('device-tracking attach-policy IPDT_POLICY', None) }}"
+          - "{{ ('IOS-XE' is match(ansible_facts['net_iostype'])) | ternary('device-tracking attach-policy IPDT_POLICY', None) }}"
           - "{{ dot1x_interface_authentication_multihost | default(None) }}"
           - authentication order {{ dot1x_interface_authentication_order }}
           - authentication priority {{ dot1x_interface_authentication_priority }}
@@ -205,12 +205,12 @@
           - dot1x timeout tx-period 7
           - dot1x max-reauth-req 3
           - storm-control broadcast level 1.00
-          - spanning-tree portfast {{ (ansible_facts['net_iostype'] == 'IOS') | ternary('edge', None) }}
+          - spanning-tree portfast {{ ('IOS' is match(ansible_facts['net_iostype'])) | ternary('edge', None) }}
         parents:
           - interface {{ dot1x_item['name'] }}
       when:
         - dot1x_item['mode'] is defined
-        - dot1x_item['mode'] == 'access'
+        - dot1x_item['mode'] is match('access')
         - dot1x_item['access']['vlan'] is undefined
       loop: "{{ ansible_facts['network_resources']['l2_interfaces'] }}"
       loop_control:

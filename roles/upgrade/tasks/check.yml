@@ -1,23 +1,21 @@
 ---
 # tasks file for upgrade
 
-- name: check | Set compliant OS version and image as facts.
-  ansible.builtin.set_fact:
-    upgrade_compliant_version: "{{ upgrade_item['compliant_version'] }}"
-    upgrade_compliant_image: "{{ upgrade_item['compliant_image'] }}"
-  when:
-    - ansible_facts['net_system'] == upgrade_item['system']
-    - ansible_facts['net_model'] is regex( upgrade_item['model'] )
-  loop: "{{ upgrade_compliance }}"
-  loop_control:
-    loop_var: upgrade_item
-    label: Compliant version {{ upgrade_item['compliant_version'] }}
+- name: check | Gather facts.
+  cisco.ios.ios_facts:
+    gather_subset: min
 
-- name: check | Assert that network-device is supported by playbook.
-  ansible.builtin.assert:
-    that: upgrade_compliant_version is defined
-    fail_msg: "{{ ansible_facts['net_model'] }} is not supported by this playbook."
-    quiet: true
+- name: check | Include model and system-specific variables.
+  ansible.builtin.include_vars:
+    file: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ (ansible_facts['net_model'] is regex('^C9[3-6][0-9][0-9]')) | ternary('cat9k', '') }}_{{ ansible_facts['net_system'] }}.yml"
+        - "{{ (ansible_facts['net_model'] is regex('^WS-C2960CX')) | ternary('c2960cx', '') }}_{{ ansible_facts['net_system'] }}.yml"
+        - "{{ (ansible_facts['net_model'] is regex('^Nexus9000')) | ternary('nexus9000', '') }}_{{ ansible_facts['net_system'] }}.yml"
+      paths:
+        - 'vars'
 
 - name: check | Print compliance.
   ansible.builtin.debug:
@@ -27,43 +25,7 @@
 
 - name: check | Assert compliance.
   ansible.builtin.assert:
-    that: ansible_net_version is match upgrade_compliant_version
+    that: ansible_facts['net_version'] is version(upgrade_compliant_version)
     success_msg: Compliant {{ ansible_facts['net_system'] }} {{ ansible_facts['net_version'] }} is installed.
     fail_msg: Installed {{ ansible_facts['net_system'] }} is {{ ansible_facts['net_version'] }}. Upgrade to {{ upgrade_compliant_version }} is required.
   when: ansible_check_mode | bool
-
-
-- name: check | Check if compliant image is present in flash.
-  when:
-    - not ansible_check_mode
-    - ansible_facts['net_version'] != upgrade_compliant_version
-    - ansible_network_os == 'cisco.ios.ios'
-  block:
-
-    - name: check | Check if the compliant image is present in flash.
-      cisco.ios.ios_command:
-        commands:
-          - "show flash: | include {{ upgrade_compliant_image }}"
-      register: upgrade_flash_output
-
-    - name: check | Set result as fact.
-      ansible.builtin.set_fact:
-        upgrade_flash: "{{ upgrade_flash_output['stdout'][0] }}"
-
-
-- name: check | Check if compliant image is present in bootflash.
-  when:
-    - not ansible_check_mode
-    - ansible_facts['net_version'] != upgrade_compliant_version
-    - ansible_network_os == 'cisco.nxos.nxos'
-  block:
-
-    - name: check | Check if the compliant image is present in bootflash.
-      cisco.nxos.nxos_command:
-        commands:
-          - "dir bootflash: | include {{ upgrade_compliant_image }}"
-      register: upgrade_flash_output
-
-    - name: check | Set result as fact.
-      ansible.builtin.set_fact:
-        upgrade_flash: "{{ upgrade_flash_output['stdout'][0] }}"
