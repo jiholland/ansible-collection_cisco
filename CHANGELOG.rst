@@ -5,6 +5,14 @@ Jiholland.Cisco Release Notes
 .. contents:: Topics
 
 
+v2023.15.0
+==========
+
+Bugfixes
+--------
+
+- Retag release for galaxy deployment.
+
 v2023.14.2
 ==========
 

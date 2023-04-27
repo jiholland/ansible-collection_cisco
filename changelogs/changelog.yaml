@@ -17,3 +17,10 @@ releases:
     - 1-banner-lint.yml
     - bugfixes.yml
     release_date: '2023-04-24'
+  2023.15.0:
+    changes:
+      bugfixes:
+      - Retag release for galaxy deployment.
+    fragments:
+    - galaxy.yml
+    release_date: '2023-04-27'
