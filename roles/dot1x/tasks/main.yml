@@ -4,4 +4,4 @@
 - name: Include OS-specific tasks.
   ansible.builtin.include_tasks:
     file: configure_{{ ansible_network_os }}.yml
-  when: network_function == 'access'
+  when: network_role is match('access')

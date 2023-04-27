@@ -16,7 +16,7 @@
       - interface {{ dhcp_snooping_item['name'] }}
   when:
     - dhcp_snooping_item['mode'] is defined
-    - dhcp_snooping_item['mode'] == 'trunk'
+    - dhcp_snooping_item['mode'] is match('trunk')
   loop: "{{ ansible_facts['network_resources']['l2_interfaces'] }}"
   loop_control:
     loop_var: dhcp_snooping_item

@@ -3,7 +3,6 @@
 
 - name: Gather facts from localhost.
   ansible.builtin.setup:
-    gather_subset: min
   delegate_to: localhost
   run_once: true
 

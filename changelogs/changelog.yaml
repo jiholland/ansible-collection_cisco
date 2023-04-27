@@ -12,6 +12,8 @@ releases:
       minor_changes:
       - Added gather_subset to ansible.builtin.setup.
       - Minor improvements to vxlan, upgrade and vpc.
+      - Various improvements and bug fixes.
     fragments:
     - 1-banner-lint.yml
+    - bugfixes.yml
     release_date: '2023-04-24'

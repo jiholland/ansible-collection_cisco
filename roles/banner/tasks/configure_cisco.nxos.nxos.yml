@@ -6,7 +6,7 @@
     banner: motd
     text: "{{ lookup('file', 'banner.cfg') }}"
     state: present
-  when: ansible_facts['date_time']['month'] != '12'
+  when: ansible_facts['date_time']['month'] is not match('12')
   notify: Save nxos.
 
 - name: configure_cisco.nxos.nxos | Set MOTD banner - xmas edition.
@@ -14,5 +14,5 @@
     banner: motd
     text: "{{ lookup('file', 'xmas_banner.cfg') }}"
     state: present
-  when: ansible_facts['date_time']['month'] == '12'
+  when: ansible_facts['date_time']['month'] is match('12')
   notify: Save nxos.
