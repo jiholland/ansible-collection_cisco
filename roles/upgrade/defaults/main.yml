@@ -3,7 +3,14 @@
 
 upgrade_tftp_server: "{{ (tftp_server is defined) | ternary(tftp_server, '10.10.10.10') }}"
 
-upgrade_mgmt_vrf: management
-
 # Used when scheduling the upgrade
 upgrade_playbook_name: playbook_upgrade.yml
+
+# Cisco Nexus related defaults
+upgrade_nexus:
+  remote_file: /var/lib/tftpboot/{{ upgrade_compliant_image }}
+  remote_scp_server: "{{ upgrade_tftp_server }}"
+  remote_scp_server_user: "{{ ansible_user }}"
+  remote_scp_server_password: "{{ ansible_password }}"
+  vrf: management
+  issu: false  # Upgrade using In Service Software Upgrade (ISSU)

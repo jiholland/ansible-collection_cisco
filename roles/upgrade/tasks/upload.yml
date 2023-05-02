@@ -8,6 +8,7 @@
   when: ansible_network_os is match('cisco.ios.ios')
   register: upgrade_flash_output
 
+
 - name: upload | Upload image.
   when:
     - ansible_network_os is match('cisco.ios.ios')
@@ -22,7 +23,7 @@
             answer: y
       vars:
         ansible_command_timeout: 1800
-      when: "'IOS-XE' is match(ansible_facts['net_iostype'])"
+      when: ansible_facts['net_iostype'] is match('IOS-XE')
 
     - name: upload | Ensure maximum blocksize for TFTP.
       cisco.ios.ios_config:
@@ -52,9 +53,10 @@
     - name: upload | Upload compliant OS.
       cisco.nxos.nxos_file_copy:
         file_pull: true
-        remote_file: /var/lib/tftpboot/{{ upgrade_compliant_image }}
-        remote_scp_server: "{{ upgrade_tftp_server }}"
-        remote_scp_server_user: "{{ ansible_user }}"
-        remote_scp_server_password: "{{ ansible_password }}"
-        vrf: "{{ upgrade_mgmt_vrf }}"
+        remote_file: "{{ upgrade_nexus['remote_file'] }}"
+        remote_scp_server: "{{ upgrade_nexus['remote_scp_server'] }}"
+        remote_scp_server_user: "{{ upgrade_nexus['remote_scp_server_user'] }}"
+        remote_scp_server_password: "{{ upgrade_nexus['remote_scp_server_password'] }}"
+        vrf: "{{ upgrade_nexus['vrf'] }}"
       when: upgrade_bootflash_output['stdout'][0] is not search(upgrade_compliant_image)
+
