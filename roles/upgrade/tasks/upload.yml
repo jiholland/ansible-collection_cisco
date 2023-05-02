@@ -59,4 +59,3 @@
         remote_scp_server_password: "{{ upgrade_nexus['remote_scp_server_password'] }}"
         vrf: "{{ upgrade_nexus['vrf'] }}"
       when: upgrade_bootflash_output['stdout'][0] is not search(upgrade_compliant_image)
-
