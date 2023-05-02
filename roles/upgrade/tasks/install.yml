@@ -30,7 +30,7 @@
 - name: install | Install IOS-XE.
   when:
     - ansible_network_os is match('cisco.ios.ios')
-    - "'IOS-XE' is match(ansible_facts['net_iostype'])"
+    - ansible_facts['net_iostype'] is match('IOS-XE')
   block:
 
     - name: install | Set boot variable and enable auto-boot. Copy running-config startup-config.
@@ -73,7 +73,7 @@
     - name: install | Disruptively install compliant OS.
       cisco.nxos.nxos_command:
         commands:
-          - install all nxos bootflash:{{ upgrade_compliant_image }} non-interruptive
+          - install all nxos bootflash:{{ upgrade_compliant_image }} {{ (upgrade_nexus['issu'] | bool) | ternary('non-disruptive', 'non-interruptive') }}
       vars:
         ansible_command_timeout: 3600
       register: upgrade_installed
