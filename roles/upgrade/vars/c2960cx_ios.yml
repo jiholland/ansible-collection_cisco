@@ -1,5 +1,0 @@
----
-# vars file for Cisco Catalyst 2960-CX
-
-upgrade_compliant_version: 15.2(7)E5
-upgrade_compliant_image: c2960cx-universalk9-mz.152-7.E5.bin

@@ -6,3 +6,10 @@ releases:
     fragments:
     - release.yml
     release_date: '2023-05-02'
+  23.0.1:
+    changes:
+      minor_changes:
+      - Various bugfixes and improvements.
+    fragments:
+    - bugfix.yml
+    release_date: '2023-05-12'

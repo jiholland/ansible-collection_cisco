@@ -1,7 +1,25 @@
 ---
 # defaults file for upgrade
 
-upgrade_tftp_server: "{{ (tftp_server is defined) | ternary(tftp_server, '10.10.10.10') }}"
+# List containing compliant versions and images for each system.
+upgrade_compliance:
+  - system: ios
+    model: '^C9[3-6][0-9][0-9]'  # Catalyst 9300, 9407, 9410, 9500, 9600
+    compliant_version: 17.06.05
+    compliant_image: cat9k_iosxe.17.06.05.SPA.bin
+
+  - system: ios
+    model: '^WS-C2960CX'
+    compliant_version: 15.2(7)E5
+    compliant_image: c2960cx-universalk9-mz.152-7.E5.bin
+
+  - system: nxos
+    model: '^Nexus9000'
+    compliant_version: 10.2(5)
+    compliant_image: nxos64-cs.10.2.5.M.bin
+
+# The server where the compliant images are stored.
+upgrade_tftp_server: "{{ tftp_server | default('10.1.1.1') }}"
 
 # Used when scheduling the upgrade
 upgrade_playbook_name: playbook_upgrade.yml
