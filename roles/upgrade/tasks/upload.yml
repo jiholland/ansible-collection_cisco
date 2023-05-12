@@ -5,14 +5,14 @@
   cisco.ios.ios_command:
     commands:
       - "show flash: | include {{ upgrade_compliant_image }}"
-  when: ansible_network_os is match('cisco.ios.ios')
+  when: ansible_network_os is eq('cisco.ios.ios')
   register: upgrade_flash_output
 
 
 - name: upload | Upload image.
   when:
-    - ansible_network_os is match('cisco.ios.ios')
-    - upgrade_flash_output['stdout'][0] is not search(upgrade_compliant_image)
+    - ansible_network_os is eq('cisco.ios.ios')
+    - upgrade_flash_output['stdout'][0] is not ansible.builtin.search(upgrade_compliant_image)
   block:
 
     - name: upload | Remove inactive software.
@@ -23,7 +23,7 @@
             answer: y
       vars:
         ansible_command_timeout: 1800
-      when: ansible_facts['net_iostype'] is match('IOS-XE')
+      when: ansible_facts['net_iostype'] is eq('IOS-XE')
 
     - name: upload | Ensure maximum blocksize for TFTP.
       cisco.ios.ios_config:
@@ -41,7 +41,7 @@
 
 
 - name: upload | Upload image.
-  when: ansible_network_os is match('cisco.nxos.nxos')
+  when: ansible_network_os is eq('cisco.nxos.nxos')
   block:
 
     - name: upload | Check if the compliant image is present in bootflash.
@@ -58,4 +58,4 @@
         remote_scp_server_user: "{{ upgrade_nexus['remote_scp_server_user'] }}"
         remote_scp_server_password: "{{ upgrade_nexus['remote_scp_server_password'] }}"
         vrf: "{{ upgrade_nexus['vrf'] }}"
-      when: upgrade_bootflash_output['stdout'][0] is not search(upgrade_compliant_image)
+      when: upgrade_bootflash_output['stdout'][0] is not ansible.builtin.search(upgrade_compliant_image)

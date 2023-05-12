@@ -1,5 +1,0 @@
----
-# vars file for Cisco Catalyst 9k
-
-upgrade_compliant_version: 17.06.05
-upgrade_compliant_image: cat9k_iosxe.17.06.05.SPA.bin

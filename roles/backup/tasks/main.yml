@@ -7,9 +7,7 @@
   delegate_to: localhost
   run_once: true
   register: backup_time
-  check_mode: false
   changed_when: false
-
 
 - name: Checkout git repo to localhost.
   ansible.builtin.git:

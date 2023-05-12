@@ -1,14 +1,14 @@
 ---
 # tasks file for upgrade
 
-- name: Check compliance.
+- name: Include tasks for checking compliance.
   tags: upload
   ansible.builtin.include_tasks:
     file: check.yml
     apply:
       tags: upload
 
-- name: Upload compliant OS to target.
+- name: Include tasks for uploading compliant OS to target.
   tags: upload
   ansible.builtin.include_tasks:
     file: upload.yml
@@ -16,16 +16,16 @@
       tags: upload
   when:
     - not ansible_check_mode
-    - ansible_facts['net_version'] is not version(upgrade_compliant_version)
+    - ansible_facts['net_version'] is not ansible.builtin.version(upgrade_compliant_version)
 
-- name: Install compliant OS.
+- name: Include tasks for installing compliant OS.
   ansible.builtin.include_tasks:
     file: install.yml
   when:
     - not ansible_check_mode
-    - ansible_facts['net_version'] is not version(upgrade_compliant_version)
+    - ansible_facts['net_version'] is not ansible.builtin.version(upgrade_compliant_version)
 
-- name: Schedule the upgrade.
+- name: Include tasks for scheduling the upgrade.
   tags: [never, schedule]
   ansible.builtin.import_tasks: schedule_upgrade.yml
   delegate_to: localhost

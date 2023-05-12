@@ -3,8 +3,8 @@
 
 - name: install | Install IOS.
   when:
-    - ansible_network_os is match('cisco.ios.ios')
-    - "'IOS' is match(ansible_facts['net_iostype'])"
+    - ansible_network_os is eq('cisco.ios.ios')
+    - ansible_facts['net_iostype'] is eq('IOS')
   block:
 
     - name: install | Set boot variable. Copy running-config startup-config.
@@ -29,8 +29,8 @@
 
 - name: install | Install IOS-XE.
   when:
-    - ansible_network_os is match('cisco.ios.ios')
-    - ansible_facts['net_iostype'] is match('IOS-XE')
+    - ansible_network_os is eq('cisco.ios.ios')
+    - ansible_facts['net_iostype'] is eq('IOS-XE')
   block:
 
     - name: install | Set boot variable and enable auto-boot. Copy running-config startup-config.
@@ -63,7 +63,7 @@
 
 
 - name: install | Install NXOS.
-  when: ansible_network_os is match('cisco.nxos.nxos')
+  when: ansible_network_os is eq('cisco.nxos.nxos')
   block:
 
     - name: install | Copy running-config startup-config.
@@ -72,8 +72,9 @@
 
     - name: install | Disruptively install compliant OS.
       cisco.nxos.nxos_command:
-        commands:
-          - install all nxos bootflash:{{ upgrade_compliant_image }} {{ (upgrade_nexus['issu'] | bool) | ternary('non-disruptive', 'non-interruptive') }}
+        commands: >-
+          install all nxos bootflash:{{ upgrade_compliant_image }}
+          {{ (upgrade_nexus['issu'] | ansible.builtin.bool) | ansible.builtin.ternary('non-disruptive', 'non-interruptive') }}
       vars:
         ansible_command_timeout: 3600
       register: upgrade_installed
@@ -105,6 +106,6 @@
 
     - name: install | Assert that the upgrade succeeded.
       ansible.builtin.assert:
-        that: ansible_facts['net_version'] is version(upgrade_compliant_version)
+        that: ansible_facts['net_version'] is ansible.builtin.version(upgrade_compliant_version)
         success_msg: Upgrade to {{ upgrade_compliant_version }} was successful.
         fail_msg: Unable to upgrade. Device is running {{ ansible_facts['net_version'] }}. Expected {{ upgrade_compliant_version }}.
