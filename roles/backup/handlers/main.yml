@@ -5,10 +5,10 @@
   # noqa command-instead-of-module
   ansible.builtin.command: "{{ backup_item }}"
   args:
-    chdir: "{{ backup_git_dest }}/{{ backup_time['stdout'] }}"
+    chdir: "{{ backup_git_dest }}/{{ backup_time }}"
   loop:
     - git add .
-    - git commit -m 'Backup created at {{ backup_time['stdout'] }}.'
+    - git commit -m 'Backup created at {{ backup_time }}.'
     - git push origin {{ backup_git_version }}
   loop_control:
     loop_var: backup_item

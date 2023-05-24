@@ -18,6 +18,7 @@ Role Variables
 - backup\_git\_version
 - backup\_git\_accept\_newhostkey
 - backup\_git\_config
+- backup\_time
 - backup\_cron\_weekday
 - backup\_cron\_hour
 - backup\_cron\_minute
