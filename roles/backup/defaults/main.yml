@@ -11,6 +11,8 @@ backup_git_config:
   - name: user.email
     value: "{{ ansible_user | default('tower') }}@changeme.com"
 
+backup_time: "{{ ansible_facts['date_time']['date'] }}"
+
 backup_cron_weekday: '0'  # Sunday
 backup_cron_hour: '2'
 backup_cron_minute: '0'

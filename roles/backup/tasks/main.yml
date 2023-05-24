@@ -2,12 +2,13 @@
 # tasks file for backup
 
 - name: Get current time from localhost.
-  ansible.builtin.command:
-    cmd: date +%Y-%m-%d
+  ansible.builtin.setup:
+    gather_subset:
+      - "!all"
+      - "!min"
+      - date_time
   delegate_to: localhost
   run_once: true
-  register: backup_time
-  changed_when: false
 
 - name: Checkout git repo to localhost.
   ansible.builtin.git:
@@ -36,9 +37,9 @@
 
 - name: Create backup directory.
   ansible.builtin.file:
-    path: "{{ backup_git_dest }}/{{ backup_time['stdout'] }}"
+    path: "{{ backup_git_dest }}/{{ backup_time }}"
     state: directory
-    mode: '0775'
+    mode: u=rwx,g=rx,o=rx
   delegate_to: localhost
   run_once: true
 
