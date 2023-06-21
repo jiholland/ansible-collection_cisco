@@ -1,7 +1,15 @@
 ---
 # defaults file for upgrade
 
+# The server where the compliant images are stored.
+upgrade_tftp_server: "{{ tftp_server | default('10.191.163.11') }}"
+
+# Overwrite the defaults with the values from inventory
+upgrade_compliant_version: "{{ lookup('ansible.builtin.template', 'upgrade_compliant_version.j2') | ansible.builtin.from_yaml }}"
+upgrade_compliant_image: "{{ lookup('ansible.builtin.template', 'upgrade_compliant_image.j2') | ansible.builtin.from_yaml }}"
+
 # List containing compliant versions and images for each system.
+# These are used to set the upgrade_compliant_version and upgrade_compliant_image defaults above.
 upgrade_compliance:
   - system: ios
     model: '^C9[3-6][0-9][0-9]'  # Catalyst 9300, 9407, 9410, 9500, 9600
@@ -17,9 +25,6 @@ upgrade_compliance:
     model: '^Nexus9000'
     compliant_version: 10.2(5)
     compliant_image: nxos64-cs.10.2.5.M.bin
-
-# The server where the compliant images are stored.
-upgrade_tftp_server: "{{ tftp_server | default('10.1.1.1') }}"
 
 # Used when scheduling the upgrade
 upgrade_playbook_name: playbook_upgrade.yml

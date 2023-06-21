@@ -1,0 +1,14 @@
+---
+# tasks file for interface_description
+
+- name: configure_cisco.nxos.nxos | Gather interface facts.
+  cisco.nxos.nxos_facts:
+    gather_subset:
+      - interfaces
+  vars:
+    ansible_command_timeout: 60
+
+- name: configure_cisco.nxos.nxos | Set interface description.
+  cisco.nxos.nxos_config:
+    src: interface_description_nxos.j2
+  notify: Save nxos.

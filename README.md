@@ -7,45 +7,14 @@ Roles included in this collection (click on the link to see the role's README an
   - `jiholland.cisco.backup`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/backup/README.md))
   - `jiholland.cisco.tacacs`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/tacacs/README.md))
   - `jiholland.cisco.upgrade`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/upgrade/README.md))
+  - `jiholland.cisco.interface_description`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/interface_description/README.md))
 
 ## Installation
 
 Install via Ansible Galaxy:
 
 ```yaml
-ansible-galaxy collection install git@github.com:jiholland/ansible-collection_cisco.git
-```
-
-## Usage
-```YAML
----
-- name: Backup config from target to git.
-  hosts: "{{ target }}"
-  gather_facts: false
-
-  roles:
-    - role: jiholland.cisco.backup
-      when: not ansible_check_mode
-...
-
----
-- name: Upgrade OS to compliant version.
-  hosts: "{{ target }}"
-  gather_facts: false
-
-  roles:
-    - jiholland.cisco.upgrade
-...
-
----
-- name: Ensure tacacs authentication.
-  hosts: "{{ target }}"
-  gather_facts: false
-
-  roles:
-    - jiholland.cisco.tacacs
-...
-
+ansible-galaxy collection install jiholland.cisco
 ```
 ## License
 

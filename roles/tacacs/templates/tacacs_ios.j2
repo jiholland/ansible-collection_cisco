@@ -1,0 +1,7 @@
+{% for tacacs_item in tacacs_servers %}
+tacacs server {{ tacacs_item['name'] }}
+ address ipv4 {{ tacacs_item['ip'] }}
+ key {{ tacacs_key }}
+aaa group server tacacs+ {{ tacacs_group }}
+ server name {{ tacacs_item['name'] }} 
+{% endfor %}

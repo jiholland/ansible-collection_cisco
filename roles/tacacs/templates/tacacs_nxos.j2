@@ -1,0 +1,6 @@
+{% for tacacs_item in tacacs_servers %}
+tacacs-server host {{ tacacs_item['ip'] }} key {{ tacacs_key }}
+aaa group server tacacs+ {{ tacacs_group }}
+ server {{ tacacs_item['ip'] }} 
+ source-interface {{ tacacs_interface }}
+{% endfor %}

@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  role_name: tacacs
+  role_name: interface_description
   author: Jørn Ivar Holland
-  description: Ensure tacacs authentication.
+  description: Set interface description based on CDP and LLDP.
   license: BSD-3-Clause
   min_ansible_version: '2.9'
   platforms:
@@ -17,9 +17,9 @@ galaxy_info:
     - cisco
     - catalyst
     - nexus
-    - authentication
-    - tacacs
-    - aaa
+    - interface
+    - cdp
+    - lldp
 
 
 dependencies: []
