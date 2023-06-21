@@ -1,0 +1,16 @@
+---
+# tasks file for interface_description
+
+- name: configure_cisco.ios.ios | Gather interface facts.
+  cisco.ios.ios_facts:
+    gather_subset:
+      - interfaces
+  vars:
+    ansible_command_timeout: 60
+
+- name: configure_cisco.ios.ios | Set interface description.
+  cisco.ios.ios_interfaces:
+    config: "{{ interface_description }}"
+    state: merged
+  when: interface_description | length is gt(0)
+  notify: Save ios.

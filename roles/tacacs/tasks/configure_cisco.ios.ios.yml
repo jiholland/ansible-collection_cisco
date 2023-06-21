@@ -1,54 +1,38 @@
 ---
 # tasks file for tacacs
 
-- name: configure_cisco.ios.ios | Set tacacs server hosts.
-  when: not ansible_check_mode
-  block:
-
-    - name: configure_cisco.ios.ios | Set primary tacacs server host.
-      cisco.ios.ios_config:
-        lines:
-          - address ipv4 {{ tacacs_server_primary_ip }}
-          - key {{ tacacs_server_key }}
-        parents:
-          - tacacs server {{ tacacs_server_primary_name }}
-      notify: Save ios.
-
-    - name: configure_cisco.ios.ios | Set secondary tacacs server host.
-      cisco.ios.ios_config:
-        lines:
-          - address ipv4 {{ tacacs_server_secondary_ip }}
-          - key {{ tacacs_server_key }}
-        parents:
-          - tacacs server {{ tacacs_server_secondary_name }}
-      notify: Save ios.
-
-
-- name: configure_cisco.ios.ios | Set tacacs server group.
+- name: configure_cisco.ios.ios | Set tacacs server hosts and group.
   cisco.ios.ios_config:
-    lines:
-      - server name {{ tacacs_server_primary_name }}
-      - server name {{ tacacs_server_secondary_name }}
-    parents:
-      - aaa group server tacacs+ {{ tacacs_server_group }}
-  notify: Save ios.
+    src: tacacs_ios.j2
+  when: not ansible_check_mode
 
 - name: configure_cisco.ios.ios | Test authentication.
   tags: test_authentication
   cisco.ios.ios_command:
     commands:
-      - test aaa group {{ tacacs_server_group }} {{ ansible_user }} {{ ansible_password }} new-code
+      - test aaa group {{ tacacs_group }} {{ ansible_user }} {{ ansible_password }} new-code
   when: not ansible_check_mode
   register: tacacs_output
-  failed_when: tacacs_output['stdout'] is not search('successfully authenticated')
+  failed_when: tacacs_output['stdout'] is not ansible.builtin.search('successfully authenticated')
   changed_when: false
 
 - name: configure_cisco.ios.ios | Configure tacacs authentication and authorization.
   cisco.ios.ios_config:
     lines:
       - aaa new-model
-      - aaa authentication login default group {{ tacacs_server_group }} local
-      - aaa authentication enable default group {{ tacacs_server_group }} enable
-      - aaa authorization exec default group {{ tacacs_server_group }} local
+      - aaa authentication login default group {{ tacacs_group }} local
+      - aaa authentication enable default group {{ tacacs_group }} enable
+      - aaa authorization exec default group {{ tacacs_group }} local
       - aaa authorization console
+  notify: Save ios.
+
+- name: configure_cisco.ios.ios | Get tacacs-servers.
+  cisco.ios.ios_command:
+    commands:
+      - show run aaa tacacs-server | inc ^tacacs server
+  register: tacacs_servers_output
+
+- name: configure_cisco.ios.ios | Remove obsolete tacacs-servers.
+  cisco.ios.ios_config:
+    src: tacacs_obsolete_ios.j2
   notify: Save ios.

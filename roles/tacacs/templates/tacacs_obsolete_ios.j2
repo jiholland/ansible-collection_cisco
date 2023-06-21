@@ -1,0 +1,5 @@
+{% for tacacs_item in tacacs_servers_output['stdout_lines'][0] if tacacs_item.split(' ')[2] is not in(tacacs_servers | map(attribute='name')) %}
+aaa group server tacacs+ {{ tacacs_group }}
+ no server name {{ tacacs_item.split(' ')[2] }}
+no {{ tacacs_item }}
+{% endfor %}

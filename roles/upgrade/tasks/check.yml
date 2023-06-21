@@ -5,18 +5,6 @@
   cisco.ios.ios_facts:
     gather_subset: min
 
-- name: check | Set compliant OS version and image as facts.
-  ansible.builtin.set_fact:
-    upgrade_compliant_version: "{{ upgrade_item['compliant_version'] }}"
-    upgrade_compliant_image: "{{ upgrade_item['compliant_image'] }}"
-  when:
-    - ansible_facts['net_system'] is eq(upgrade_item['system'])
-    - ansible_facts['net_model'] is ansible.builtin.regex(upgrade_item['model'])
-  loop: "{{ upgrade_compliance }}"
-  loop_control:
-    loop_var: upgrade_item
-    label: Compliant version {{ upgrade_item['compliant_version'] }}
-
 - name: check | Print compliance.
   ansible.builtin.debug:
     msg: Installed {{ ansible_facts['net_system'] }} is {{ ansible_facts['net_version'] }}. Compliant version is {{ upgrade_compliant_version }}.

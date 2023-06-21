@@ -1,10 +1,16 @@
 ---
 # defaults file for tacacs
 
-tacacs_server_primary_name: ISE-TACACS
-tacacs_server_primary_ip: 10.0.0.10
-tacacs_server_secondary_name: ISE-TACACS
-tacacs_server_secondary_ip: 10.0.0.11
+tacacs_file: "{{ role_path }}/tasks/configure_{{ ansible_network_os }}.yml"
 
-tacacs_server_group: ISE-GRP-TACACS
-tacacs_server_key: TopSecret
+tacacs_group: ISE-GRP-TACACS
+
+tacacs_servers:
+  - name: ISE-1
+    ip: 10.0.0.1
+  - name: ISE-2
+    ip: 10.0.0.2
+
+tacacs_key: topsecret
+
+tacacs_interface: mgmt0

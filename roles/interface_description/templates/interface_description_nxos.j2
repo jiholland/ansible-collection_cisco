@@ -1,0 +1,4 @@
+{% for interface_description_item in ansible_facts['net_neighbors'] | dict2items %}
+interface {{ interface_description_item['key'] }}
+ description {{ interface_description_item['value'][0]['host'] }} via {{ interface_description_item['value'][0]['port'] }}
+{% endfor %}

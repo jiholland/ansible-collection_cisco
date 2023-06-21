@@ -1,5 +1,5 @@
 🅰️🅰️🅰️ jiholland.tacacs
-=======================
+====================
 
 Ensure tacacs authentication.
 
@@ -12,12 +12,11 @@ Requirements
 Role Variables
 --------------
 
-- tacacs\_server\_group
-- tacacs\_server\_key
-- tacacs\_server\_primary\_name
-- tacacs\_server\_primary\_ip
-- tacacs\_server\_secondary\_name
-- tacacs\_server\_secondary\_ip
+- tacacs_file
+- tacacs_group
+- tacacs_servers
+- tacacs_key
+- tacacs_interface
 
 Dependencies
 ------------

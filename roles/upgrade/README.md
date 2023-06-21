@@ -13,10 +13,12 @@ Requirements
 Role Variables
 --------------
 
-- upgrade\_compliance
-- upgrade\_tftp\_server
-- upgrade\_playbook\_name
-- upgrade\_nexus
+- upgrade_tftp_server
+- upgrade_compliant_version
+- upgrade_compliant_image
+- upgrade_compliance
+- upgrade_playbook_name
+- upgrade_nexus
 
 Dependencies
 ------------

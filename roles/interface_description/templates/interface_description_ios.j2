@@ -1,0 +1,4 @@
+{% for interface_description_item in ansible_facts['net_neighbors'] | ansible.builtin.dict2items if interface_description_item['value'][0]['platform'] is defined %}
+- name: {{ interface_description_item['key'] }}
+  description: {{ interface_description_item['value'][0]['host'] }} via {{ interface_description_item['value'][0]['port'] }}
+{% endfor %}

@@ -1,0 +1,3 @@
+{% for upgrade_item in upgrade_compliance if ansible_facts['net_system'] is eq(upgrade_item['system']) and ansible_facts['net_model'] is ansible.builtin.regex(upgrade_item['model']) %}
+{{ upgrade_item['compliant_version'] }}
+{% endfor %}
