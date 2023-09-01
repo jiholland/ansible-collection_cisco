@@ -10,7 +10,7 @@
 
 - name: configure_cisco.ios.ios | Set interface description.
   cisco.ios.ios_interfaces:
-    config: "{{ interface_description }}"
+    config: "{{ interface_description_ios }}"
     state: merged
-  when: interface_description | length is gt(0)
+  when: interface_description_ios | length is gt(0)
   notify: Save ios.

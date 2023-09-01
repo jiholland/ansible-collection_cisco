@@ -6,7 +6,7 @@ Roles included in this collection (click on the link to see the role's README an
 
   - `jiholland.cisco.backup`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/backup/README.md))
   - `jiholland.cisco.tacacs`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/tacacs/README.md))
-  - `jiholland.cisco.upgrade`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/upgrade/README.md))
+  - `jiholland.cisco.software`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/software/README.md))
   - `jiholland.cisco.interface_description`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/interface_description/README.md))
 
 ## Installation

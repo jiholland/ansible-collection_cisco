@@ -13,4 +13,5 @@ tacacs_servers:
 
 tacacs_key: topsecret
 
-tacacs_interface: mgmt0
+# tacacs_source_interface: mgmt0
+# tacacs_vrf: management

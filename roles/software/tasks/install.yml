@@ -1,5 +1,5 @@
 ---
-# tasks file for upgrade
+# tasks file for sofware
 
 - name: install | Install IOS.
   when:
@@ -10,16 +10,16 @@
     - name: install | Set boot variable. Copy running-config startup-config.
       cisco.ios.ios_config:
         lines:
-          - boot system flash:{{ upgrade_compliant_image }}
+          - boot system flash:{{ software_image }}
         save_when: always
 
     - name: install | Install compliant IOS and reboot.
       cisco.ios.ios_command:
         commands:
-          - command: reload reason Upgrade {{ ansible_facts['net_system'] }} to {{ upgrade_compliant_version }}
+          - command: reload reason Upgrade {{ ansible_facts['net_system'] }} to {{ software_version }}
             prompt: Proceed with reload
             answer: "\r"
-      register: upgrade_installed
+      register: software_installed
 
     - name: install | Wait for device to reboot.
       ansible.builtin.wait_for_connection:
@@ -44,10 +44,10 @@
     - name: install | Install compliant OS and reboot.
       cisco.ios.ios_command:
         commands:
-          - install add file flash:{{ upgrade_compliant_image }} activate commit prompt-level none
+          - install add file flash:{{ software_image }} activate commit prompt-level none
       vars:
         ansible_command_timeout: 3600
-      register: upgrade_installed
+      register: software_installed
 
   rescue:
 
@@ -73,11 +73,11 @@
     - name: install | Disruptively install compliant OS.
       cisco.nxos.nxos_command:
         commands: >-
-          install all nxos bootflash:{{ upgrade_compliant_image }}
-          {{ (upgrade_nexus['issu'] | ansible.builtin.bool) | ansible.builtin.ternary('non-disruptive', 'non-interruptive') }}
+          install all nxos bootflash:{{ software_image }}
+          {{ (software_issu | ansible.builtin.bool) | ansible.builtin.ternary('non-disruptive', 'non-interruptive') }}
       vars:
         ansible_command_timeout: 3600
-      register: upgrade_installed
+      register: software_installed
 
   rescue:
 
@@ -92,20 +92,20 @@
         timeout: 600
 
 
-- name: install | Assert the upgrade.
-  when: upgrade_installed is defined
+- name: install | Assert the software upgrade.
+  when: software_installed is defined
   block:
 
     - name: install | Gather facts.
       cisco.ios.ios_facts:
         gather_subset: min
-      until: not upgrade_result['failed']
+      until: not software_result['failed']
       retries: 5
       delay: 10
-      register: upgrade_result
+      register: software_result
 
-    - name: install | Assert that the upgrade succeeded.
+    - name: install | Assert that the software upgrade succeeded.
       ansible.builtin.assert:
-        that: ansible_facts['net_version'] is ansible.builtin.version(upgrade_compliant_version)
-        success_msg: Upgrade to {{ upgrade_compliant_version }} was successful.
-        fail_msg: Unable to upgrade. Device is running {{ ansible_facts['net_version'] }}. Expected {{ upgrade_compliant_version }}.
+        that: ansible_facts['net_version'] is ansible.builtin.version(software_version)
+        success_msg: Upgrade to {{ software_version }} was successful.
+        fail_msg: Unable to upgrade. Device is running {{ ansible_facts['net_version'] }}. Expected {{ software_version }}.

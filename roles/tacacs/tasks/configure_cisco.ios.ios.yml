@@ -4,7 +4,6 @@
 - name: configure_cisco.ios.ios | Set tacacs server hosts and group.
   cisco.ios.ios_config:
     src: tacacs_ios.j2
-  when: not ansible_check_mode
 
 - name: configure_cisco.ios.ios | Test authentication.
   tags: test_authentication
@@ -29,7 +28,7 @@
 - name: configure_cisco.ios.ios | Get tacacs-servers.
   cisco.ios.ios_command:
     commands:
-      - show run aaa tacacs-server | inc ^tacacs server
+      - show run aaa tacacs-server | include tacacs server
   register: tacacs_servers_output
 
 - name: configure_cisco.ios.ios | Remove obsolete tacacs-servers.

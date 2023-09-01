@@ -1,7 +1,17 @@
+{% if tacacs_source_interface is defined and tacacs_vrf is defined %}
+ip tacacs source-interface {{ tacacs_source_interface }} vrf {{ tacacs_vrf }}
+{% endif %}
 {% for tacacs_item in tacacs_servers %}
 tacacs server {{ tacacs_item['name'] }}
  address ipv4 {{ tacacs_item['ip'] }}
+{% if not ansible_check_mode %}
  key {{ tacacs_key }}
+{% endif %}
+{% endfor %}
 aaa group server tacacs+ {{ tacacs_group }}
+{% for tacacs_item in tacacs_servers %}
  server name {{ tacacs_item['name'] }} 
 {% endfor %}
+{% if tacacs_vrf is defined %}
+ ip vrf forwarding {{ tacacs_vrf }}
+{% endif %}

@@ -4,7 +4,6 @@
 - name: configure_cisco.nxos.nxos | Set tacacs server hosts and group.
   cisco.nxos.nxos_config:
     src: tacacs_nxos.j2
-  when: not ansible_check_mode
 
 - name: configure_cisco.nxos.nxos | Test authentication.
   tags: test_authentication
@@ -19,7 +18,6 @@
 - name: configure_cisco.nxos.nxos | Configure tacacs authentication and authorization.
   cisco.nxos.nxos_config:
     lines:
-      - ip tacacs source-interface {{ tacacs_interface }}
       - aaa authentication login default group {{ tacacs_group }} local
       - aaa authentication login console group {{ tacacs_group }} local
       - aaa authentication login error-enable
@@ -28,7 +26,7 @@
 - name: configure_cisco.nxos.nxos | Get tacacs-servers.
   cisco.nxos.nxos_command:
     commands:
-      - show run tacacs+ | include ^tacacs-server
+      - show run tacacs+ | include tacacs-server
   register: tacacs_servers_output
 
 - name: configure_cisco.nxos.nxos | Remove obsolete tacacs-servers.
