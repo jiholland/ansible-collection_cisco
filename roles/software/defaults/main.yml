@@ -1,0 +1,15 @@
+---
+# defaults file for software
+
+# The server where the compliant images are stored.
+software_tftp_server: 10.10.10.10
+
+# Used when scheduling the upgrade
+software_playbook_name: playbook_software_upgrade.yml
+
+# Cisco Nexus related defaults
+software_vrf: management
+software_issu: false  # Upgrade using In Service Software Upgrade (ISSU)
+
+# software_version: 17.06.05
+# software_image: cat9k_iosxe.17.06.05.SPA.bin

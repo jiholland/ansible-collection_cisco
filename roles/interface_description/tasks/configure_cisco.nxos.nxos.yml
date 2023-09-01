@@ -9,6 +9,8 @@
     ansible_command_timeout: 60
 
 - name: configure_cisco.nxos.nxos | Set interface description.
-  cisco.nxos.nxos_config:
-    src: interface_description_nxos.j2
+  cisco.nxos.nxos_interfaces:
+    config: "{{ interface_description_nxos }}"
+    state: merged
+  when: interface_description_nxos | length is gt(0)
   notify: Save nxos.

@@ -16,7 +16,8 @@ Role Variables
 - tacacs_group
 - tacacs_servers
 - tacacs_key
-- tacacs_interface
+- tacacs_source_interface
+- tacacs_vrf
 
 Dependencies
 ------------

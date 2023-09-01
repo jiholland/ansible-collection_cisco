@@ -1,7 +1,7 @@
-🎚️ jiholland.upgrade
-====================
+🎚️ jiholland.software
+=====================
 
-Upgrade OS, upload OS, schedule the upgrade or check OS compliance (see examples👇) for Cisco Catalyst and Nexus devices.
+Upgrade software on Cisco Catalyst and Nexus devices.
 
 Requirements
 ------------
@@ -13,12 +13,12 @@ Requirements
 Role Variables
 --------------
 
-- upgrade_tftp_server
-- upgrade_compliant_version
-- upgrade_compliant_image
-- upgrade_compliance
-- upgrade_playbook_name
-- upgrade_nexus
+- software_tftp_server
+- software_playbook_name
+- software_version
+- software_image
+- software_vrf
+- software_issu
 
 Dependencies
 ------------
@@ -27,26 +27,26 @@ None.
 
 Example Playbook
 ----------------
-```YAML
+```yaml
 ---
-- name: Upgrade OS to compliant version.
+- name: Upgrade software to compliant version.
   hosts: "{{ target }}"
   gather_facts: true
 
   roles:
-    - jiholland.cisco.upgrade
+    - jiholland.cisco.software
 ```
 🧪 Run playbook in check-mode to verify compliance without making any changes:
 
-    ansible-playbook playbook_cisco_upgrade.yml -e "target=switch01" --check
+    ansible-playbook playbook_software_upgrade.yml -e "target=switch01" --check
 
 🌱 Use tag **upload** to upload without installing:
 
-    ansible-playbook playbook_cisco_upgrade.yml -e "target=switch01" --tags upload
+    ansible-playbook playbook_software_upgrade.yml -e "target=switch01" --tags upload
 
 📅 Use tag **schedule** to schedule the installation:
 
-    ansible-playbook playbook_cisco_upgrade.yml -e "target=switch01" --tags schedule
+    ansible-playbook playbook_software_upgrade.yml -e "target=switch01" --tags schedule
 
 💯 Run playbook without any tags to install immediately.
 

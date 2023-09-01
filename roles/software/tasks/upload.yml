@@ -1,0 +1,61 @@
+---
+# tasks file for software
+
+- name: upload | Check if the compliant software image is present in flash.
+  cisco.ios.ios_command:
+    commands:
+      - "show flash: | include {{ software_image }}"
+  when: ansible_network_os is eq('cisco.ios.ios')
+  register: software_flash_output
+
+
+- name: upload | Upload software image.
+  when:
+    - ansible_network_os is eq('cisco.ios.ios')
+    - software_flash_output['stdout'][0] is not ansible.builtin.search(software_image)
+  block:
+
+    - name: upload | Remove inactive software.
+      cisco.ios.ios_command:
+        commands:
+          - command: install remove inactive
+            prompt: Do you want to remove the above files
+            answer: y
+      vars:
+        ansible_command_timeout: 1800
+      when: ansible_facts['net_iostype'] is eq('IOS-XE')
+
+    - name: upload | Ensure maximum blocksize for TFTP.
+      cisco.ios.ios_config:
+        lines:
+          - ip tftp blocksize 8192
+
+    - name: upload | Upload compliant software image.
+      cisco.ios.ios_command:
+        commands:
+          - command: copy tftp://{{ software_tftp_server }}/{{ software_image }} flash:/
+            prompt: Destination filename
+            answer: "\r"
+      vars:
+        ansible_command_timeout: 3600
+
+
+- name: upload | Upload software image.
+  when: ansible_network_os is eq('cisco.nxos.nxos')
+  block:
+
+    - name: upload | Check if the compliant software image is present in bootflash.
+      cisco.nxos.nxos_command:
+        commands:
+          - "dir bootflash: | include {{ software_image }}"
+      register: software_bootflash_output
+
+    - name: upload | Upload compliant software image.
+      cisco.nxos.nxos_file_copy:
+        file_pull: true
+        remote_file: /var/lib/tftpboot/{{ software_image }}
+        remote_scp_server: "{{ software_tftp_server }}"
+        remote_scp_server_user: "{{ ansible_user }}"
+        remote_scp_server_password: "{{ ansible_password }}"
+        vrf: "{{ software_vrf }}"
+      when: software_bootflash_output['stdout'][0] is not ansible.builtin.search(software_image)

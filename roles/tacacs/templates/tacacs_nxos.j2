@@ -1,6 +1,14 @@
+ip tacacs source-interface {{ tacacs_source_interface }}
 {% for tacacs_item in tacacs_servers %}
+{% if not ansible_check_mode %}
 tacacs-server host {{ tacacs_item['ip'] }} key {{ tacacs_key }}
-aaa group server tacacs+ {{ tacacs_group }}
- server {{ tacacs_item['ip'] }} 
- source-interface {{ tacacs_interface }}
+{% endif %}
 {% endfor %}
+aaa group server tacacs+ {{ tacacs_group }}
+{% for tacacs_item in tacacs_servers %}
+ server {{ tacacs_item['ip'] }} 
+{% endfor %}
+{% if tacacs_vrf is defined %}
+ use-vrf {{ tacacs_vrf }}
+{% endif %}
+ source-interface {{ tacacs_source_interface }}
