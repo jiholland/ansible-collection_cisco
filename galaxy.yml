@@ -1,7 +1,7 @@
 ---
 namespace: jiholland
 name: cisco
-version: 2023.26.0
+version: 23.0.0
 readme: README.md
 
 authors:
@@ -16,10 +16,10 @@ tags:
   - networking
 
 dependencies:
-  ansible.posix: ">=1.5.1"
-  cisco.ios: ">=4.4.0"
-  cisco.nxos: ">=4.0.1"
-  community.general: ">=6.3.0"
+  ansible.posix: ">=1.5.4"
+  cisco.ios: ">=5.1.0"
+  cisco.nxos: ">=5.2.1"
+  community.general: ">=7.5.0"
 
 repository: https://github.com/jiholland/ansible-collection_cisco
 documentation: https://github.com/jiholland/ansible-collection_cisco

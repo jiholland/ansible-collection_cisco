@@ -10,34 +10,29 @@
   delegate_to: localhost
   run_once: true
 
+- name: Create temporary backup directory.
+  ansible.builtin.tempfile:
+    path: "{{ backup_temp_dir }}"
+    prefix: ansible_backup_
+    state: directory
+  delegate_to: localhost
+  run_once: true
+  register: backup_temp_dir_output
+  notify: Remove temporary backup directory from localhost.
+
 - name: Checkout git repo to localhost.
   ansible.builtin.git:
     repo: "{{ backup_git_repo }}"
-    dest: "{{ backup_git_dest }}"
+    dest: "{{ backup_temp_dir_output['path'] }}"
     version: "{{ backup_git_version }}"
     accept_newhostkey: "{{ backup_git_accept_newhostkey }}"
     depth: 1
   delegate_to: localhost
   run_once: true
-  notify: Remove git repo from localhost.
 
-- name: Ensure that git user.name and user.email is defined.
-  community.general.git_config:
-    name: "{{ backup_item['name'] }}"
-    value: "{{ backup_item['value'] }}"
-    scope: local
-    repo: "{{ backup_git_dest }}"
-    state: present
-  loop: "{{ backup_git_config }}"
-  loop_control:
-    loop_var: backup_item
-    label: "{{ backup_item['value'] }}"
-  delegate_to: localhost
-  run_once: true
-
-- name: Create backup directory.
+- name: Create backup directory for current time.
   ansible.builtin.file:
-    path: "{{ backup_git_dest }}/{{ backup_time }}"
+    path: "{{ backup_temp_dir_output['path'] }}/{{ backup_time }}"
     state: directory
     mode: u=rwx,g=rx,o=rx
   delegate_to: localhost

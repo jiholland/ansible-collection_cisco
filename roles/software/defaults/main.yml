@@ -4,6 +4,11 @@
 # The server where the compliant images are stored.
 software_tftp_server: 10.10.10.10
 
+software_upload_timeout: 3600
+software_install_timeout: 3600
+software_reboot_delay: 90
+software_reboot_timeout: 1800
+
 # Used when scheduling the upgrade
 software_playbook_name: playbook_software_upgrade.yml
 

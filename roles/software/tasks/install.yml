@@ -23,8 +23,8 @@
 
     - name: install | Wait for device to reboot.
       ansible.builtin.wait_for_connection:
-        delay: 60
-        timeout: 1800
+        delay: "{{ software_reboot_delay }}"
+        timeout: "{{ software_reboot_timeout }}"
 
 
 - name: install | Install IOS-XE.
@@ -45,8 +45,19 @@
       cisco.ios.ios_command:
         commands:
           - install add file flash:{{ software_image }} activate commit prompt-level none
+      when: software_issu is false
+      changed_when: true
       vars:
-        ansible_command_timeout: 3600
+        ansible_command_timeout: "{{ software_install_timeout }}"
+      register: software_installed
+
+    - name: install | Install compliant OS using ISSU.
+      cisco.ios.ios_command:
+        commands:
+          - install add file flash:{{ software_image }} activate issu commit
+      when: software_issu is true
+      vars:
+        ansible_command_timeout: "{{ software_install_timeout }}"
       register: software_installed
 
   rescue:
@@ -58,8 +69,8 @@
 
     - name: install | Wait for device to reboot.
       ansible.builtin.wait_for_connection:
-        delay: 90
-        timeout: 600
+        delay: "{{ software_reboot_delay }}"
+        timeout: "{{ software_reboot_timeout }}"
 
 
 - name: install | Install NXOS.
@@ -76,7 +87,7 @@
           install all nxos bootflash:{{ software_image }}
           {{ (software_issu | ansible.builtin.bool) | ansible.builtin.ternary('non-disruptive', 'non-interruptive') }}
       vars:
-        ansible_command_timeout: 3600
+        ansible_command_timeout: "{{ software_install_timeout }}"
       register: software_installed
 
   rescue:
@@ -88,8 +99,8 @@
 
     - name: install | Wait for device to reboot.
       ansible.builtin.wait_for_connection:
-        delay: 90
-        timeout: 600
+        delay: "{{ software_reboot_delay }}"
+        timeout: "{{ software_reboot_timeout }}"
 
 
 - name: install | Assert the software upgrade.

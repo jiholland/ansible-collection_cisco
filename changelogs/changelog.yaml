@@ -1,23 +1,4 @@
 ancestor: null
 releases:
-  2023.25.0:
-    changes:
-      minor_changes:
-      - Minor improvements and fixes.
-    fragments:
-    - fix.yml
-    release_date: '2023-06-21'
-  2023.25.1:
-    changes:
-      bugfixes:
-      - Minor bugfixes.
-    fragments:
-    - fix.yml
-    release_date: '2023-06-22'
-  2023.26.0:
-    changes:
-      minor_changes:
-      - Various improvements and fixes.
-    fragments:
-    - fix.yml
-    release_date: '2023-09-01'
+  23.0.0:
+    release_date: '2023-10-16'
