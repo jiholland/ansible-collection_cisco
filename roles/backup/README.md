@@ -13,12 +13,13 @@ Requirements
 Role Variables
 --------------
 
+- backup_file
+- backup_temp_dir
 - backup_git_repo
-- backup_git_dest
 - backup_git_version
 - backup_git_accept_newhostkey
-- backup_git_config
 - backup_time
+- backup_filename
 - backup_cron_weekday
 - backup_cron_hour
 - backup_cron_minute

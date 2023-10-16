@@ -5,6 +5,6 @@
   cisco.ios.ios_config:
     backup: true
     backup_options:
-      filename: "{{ inventory_hostname }}_{{ backup_time }}.txt"
-      dir_path: "{{ backup_git_dest }}/{{ backup_time }}"
+      filename: "{{ backup_filename }}"
+      dir_path: "{{ backup_temp_dir_output['path'] }}/{{ backup_time }}"
   notify: Push to git.

@@ -27,6 +27,7 @@
 
 - name: Include tasks for scheduling the software upgrade.
   tags: [never, schedule]
-  ansible.builtin.import_tasks: schedule_upgrade.yml
+  ansible.builtin.import_tasks:
+    file: schedule_upgrade.yml
   delegate_to: localhost
   run_once: true
