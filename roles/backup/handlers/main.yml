@@ -3,7 +3,8 @@
 
 - name: Push to git.
   # noqa command-instead-of-module
-  ansible.builtin.command: "{{ backup_item }}"
+  ansible.builtin.command:
+    cmd: "{{ backup_item }}"
   args:
     chdir: "{{ backup_temp_dir_output['path'] }}/{{ backup_time }}"
   loop:
