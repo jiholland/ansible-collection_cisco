@@ -6,8 +6,8 @@ Ensure tacacs authentication.
 Requirements
 ------------
 
-[Cisco IOS Collection](https://galaxy.ansible.com/cisco/ios)<br>
-[Cisco NXOS Collection](https://galaxy.ansible.com/cisco/nxos)
+💿 [Cisco IOS Collection](https://galaxy.ansible.com/cisco/ios)<br>
+💿 [Cisco NXOS Collection](https://galaxy.ansible.com/cisco/nxos)
 
 Role Variables
 --------------

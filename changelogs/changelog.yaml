@@ -2,3 +2,11 @@ ancestor: null
 releases:
   23.0.0:
     release_date: '2023-10-16'
+  23.0.1:
+    changes:
+      minor_changes:
+      - backup - use cmd, not free-form, for handler.
+      - tacacs - readme.me fixed typo.
+    fragments:
+    - fix.yml
+    release_date: '2023-10-17'
