@@ -1,8 +1,12 @@
 ---
 # .ansible-lint
 
+profile: production
+
 exclude_paths:
   - .cache/
   - .github/
   - changelogs/
   - .venv/
+
+offline: true

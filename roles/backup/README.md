@@ -35,6 +35,7 @@ Example Playbook
 ---
 - name: Backup config from target to git.
   hosts: "{{ target }}"
+  strategy: linear
   gather_facts: false
 
   roles:

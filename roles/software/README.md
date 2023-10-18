@@ -35,6 +35,7 @@ Example Playbook
 ---
 - name: Upgrade software to compliant version.
   hosts: "{{ target }}"
+  strategy: linear
   gather_facts: true
 
   roles:
