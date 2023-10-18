@@ -10,3 +10,17 @@ releases:
     fragments:
     - fix.yml
     release_date: '2023-10-17'
+  23.0.2:
+    changes:
+      bugfixes:
+      - backup - removed debug task.
+      - backup - use chdir not args in handler.
+      - software - typo in task name.
+      minor_changes:
+      - backup - set example in readme to use stragegy linear because of run_once.
+      - meta - bump ansible to 2.15
+      - software - set example in readme to use stragegy linear because of run_once.
+    fragments:
+    - change.yml
+    - fix.yml
+    release_date: '2023-10-18'

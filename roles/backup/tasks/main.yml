@@ -53,13 +53,3 @@
     state: present
   delegate_to: localhost
   run_once: true
-
-- name: Print info about crontabs.
-  tags: [never, backup_schedule]
-  ansible.builtin.debug:
-    msg:
-      - Use command 'crontab -l' to display the current crontab in standard output.
-      - Use command 'crontab -r' to remove the current crontab.
-    verbosity: 0
-  delegate_to: localhost
-  run_once: true

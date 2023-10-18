@@ -11,7 +11,7 @@
     verbosity: 0
   when: not ansible_check_mode
 
-- name: check | Assert softwarfe compliance.
+- name: check | Assert software compliance.
   ansible.builtin.assert:
     that: ansible_facts['net_version'] is ansible.builtin.version(software_version)
     success_msg: Compliant {{ ansible_facts['net_system'] }} {{ ansible_facts['net_version'] }} is installed.
