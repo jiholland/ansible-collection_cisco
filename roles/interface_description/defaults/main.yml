@@ -1,7 +1,5 @@
 ---
 # defaults file for interface_description
 
-interface_description_file: "{{ role_path }}/tasks/configure_{{ ansible_network_os }}.yml"
-
 interface_description_ios: "{{ lookup('ansible.builtin.template', 'interface_description_ios.j2') | ansible.builtin.from_yaml }}"
 interface_description_nxos: "{{ lookup('ansible.builtin.template', 'interface_description_nxos.j2') | ansible.builtin.from_yaml }}"

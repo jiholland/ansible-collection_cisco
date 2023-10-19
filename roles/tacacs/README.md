@@ -12,7 +12,6 @@ Requirements
 Role Variables
 --------------
 
-- tacacs_file
 - tacacs_group
 - tacacs_servers
 - tacacs_key

@@ -12,7 +12,6 @@ Requirements
 Role Variables
 --------------
 
-- interface_description_file
 - interface_description
 
 Dependencies

@@ -1,7 +1,7 @@
 ---
 namespace: jiholland
 name: cisco
-version: 23.0.2
+version: 23.0.3
 readme: README.md
 
 authors:
@@ -13,7 +13,13 @@ license:
   - BSD-3-Clause
 
 tags:
+  - backup
+  - catalyst
+  - cisco
+  - interface_description
   - networking
+  - software
+  - tacacs
 
 dependencies:
   ansible.posix: ">=1.5.4"
@@ -22,8 +28,6 @@ dependencies:
   community.general: ">=7.5.0"
 
 repository: https://github.com/jiholland/ansible-collection_cisco
-documentation: https://github.com/jiholland/ansible-collection_cisco
-homepage: https://github.com/jiholland
 issues: https://github.com/jiholland/ansible-collection_cisco/issues
 
 build_ignore: []

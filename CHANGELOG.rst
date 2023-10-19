@@ -5,6 +5,17 @@ Test.Test Release Notes
 .. contents:: Topics
 
 
+v23.0.3
+=======
+
+Minor Changes
+-------------
+
+- backup - removed condition when including tasks
+- galaxy - added tags
+- interface_description - removed condition when including tasks
+- tacacs - removed condition when including tasks
+
 v23.0.2
 =======
 
