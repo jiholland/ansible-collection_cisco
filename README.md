@@ -5,9 +5,9 @@ This collection includes helpful Ansible roles and content to help with Cisco ne
 Roles included in this collection (click on the link to see the role's README and documentation):
 
   - `jiholland.cisco.backup`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/backup/README.md))
-  - `jiholland.cisco.tacacs`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/tacacs/README.md))
-  - `jiholland.cisco.software`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/software/README.md))
   - `jiholland.cisco.interface_description`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/interface_description/README.md))
+  - `jiholland.cisco.software`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/software/README.md))
+  - `jiholland.cisco.tacacs`([documentation](https://github.com/jiholland/ansible-collection_cisco/blob/main/roles/tacacs/README.md))
 
 ## Installation
 

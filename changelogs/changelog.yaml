@@ -24,3 +24,13 @@ releases:
     - change.yml
     - fix.yml
     release_date: '2023-10-18'
+  23.0.3:
+    changes:
+      minor_changes:
+      - backup - removed condition when including tasks
+      - galaxy - added tags
+      - interface_description - removed condition when including tasks
+      - tacacs - removed condition when including tasks
+    fragments:
+    - fix.yml
+    release_date: '2023-10-19'

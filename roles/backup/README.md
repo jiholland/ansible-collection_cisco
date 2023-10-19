@@ -13,7 +13,6 @@ Requirements
 Role Variables
 --------------
 
-- backup_file
 - backup_temp_dir
 - backup_git_repo
 - backup_git_version
