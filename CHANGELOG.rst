@@ -5,6 +5,16 @@ Test.Test Release Notes
 .. contents:: Topics
 
 
+v23.0.4
+=======
+
+Minor Changes
+-------------
+
+- software - Made changes to default timeouts.
+- software - Moved nexus issu install into separate task.
+- software - Replaced meta with wait_for in install rescue task.
+
 v23.0.3
 =======
 

@@ -5,9 +5,11 @@
 software_tftp_server: 10.10.10.10
 
 software_upload_timeout: 3600
-software_install_timeout: 3600
-software_reboot_delay: 90
-software_reboot_timeout: 1800
+software_install_timeout: 1080
+software_install_issu_timeout: 1800
+software_install_rescue_timeout: 180
+software_reboot_delay: 30
+software_reboot_timeout: 900
 
 # Used when scheduling the upgrade
 software_playbook_name: playbook_software_upgrade.yml
@@ -16,5 +18,5 @@ software_playbook_name: playbook_software_upgrade.yml
 software_vrf: management
 software_issu: false  # Upgrade using In Service Software Upgrade (ISSU)
 
-# software_version: 17.06.05
-# software_image: cat9k_iosxe.17.06.05.SPA.bin
+# software_version: 17.09.04
+# software_image: cat9k_iosxe.17.09.04.SPA.bin
