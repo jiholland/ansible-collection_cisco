@@ -15,9 +15,9 @@
 
 - name: schedule_upgrade | Print information.
   ansible.builtin.debug:
-    msg:
-      - Use command 'atq' to view a list of all scheduled jobs.
-      - Use command 'at -c jobnumber' to view the content of a scheduled job.
-      - Use command 'atrm jobnumber' to cancel a scheduled job.
-      - View result at /var/spool/mail/{{ ansible_user }} once the job has completed.
+    msg: |-
+      Use command 'atq' to view a list of all scheduled jobs.
+      Use command 'at -c jobnumber' to view the content of a scheduled job.
+      Use command 'atrm jobnumber' to cancel a scheduled job.
+      View result at /var/spool/mail/{{ ansible_user }} once the job has completed.
     verbosity: 0

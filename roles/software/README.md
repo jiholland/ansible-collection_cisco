@@ -16,6 +16,8 @@ Role Variables
 - software_tftp_server
 - software_upload_timeout
 - software_install_timeout
+- software_install_issu_timeout
+- software_install_rescue_timeout
 - software_reboot_delay
 - software_reboot_timeout
 - software_playbook_name

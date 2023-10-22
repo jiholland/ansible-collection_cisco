@@ -19,6 +19,7 @@
           - command: reload reason Upgrade {{ ansible_facts['net_system'] }} to {{ software_version }}
             prompt: Proceed with reload
             answer: "\r"
+      changed_when: true
       register: software_installed
 
     - name: install | Wait for device to reboot.
@@ -56,14 +57,16 @@
         commands:
           - install add file flash:{{ software_image }} activate issu commit
       when: software_issu is true
+      changed_when: true
       vars:
-        ansible_command_timeout: "{{ software_install_timeout }}"
+        ansible_command_timeout: "{{ software_install_issu_timeout }}"
       register: software_installed
 
   rescue:
 
-    - name: install | Reset the connection.
-      ansible.builtin.meta: reset_connection
+    - name: install | Sleep to recover.
+      ansible.builtin.wait_for:
+        timeout: "{{ software_install_rescue_timeout }}"
 
   always:
 
@@ -81,19 +84,31 @@
       cisco.nxos.nxos_config:
         save_when: always
 
-    - name: install | Disruptively install compliant OS.
+    - name: install | Install compliant OS and reboot.
       cisco.nxos.nxos_command:
-        commands: >-
-          install all nxos bootflash:{{ software_image }}
-          {{ (software_issu | ansible.builtin.bool) | ansible.builtin.ternary('non-disruptive', 'non-interruptive') }}
+        commands:
+          - install all nxos bootflash:{{ software_image }} non-interruptive
+      when: software_issu is false
+      changed_when: true
       vars:
         ansible_command_timeout: "{{ software_install_timeout }}"
       register: software_installed
 
+    - name: install | Install compliant OS none-disruptively using ISSU.
+      cisco.nxos.nxos_command:
+        commands:
+          - install all nxos bootflash:{{ software_image }} non-disruptive
+      when: software_issu is true
+      changed_when: true
+      vars:
+        ansible_command_timeout: "{{ software_install_issu_timeout }}"
+      register: software_installed
+
   rescue:
 
-    - name: install | Reset the connection.
-      ansible.builtin.meta: reset_connection
+    - name: install | Sleep to recover.
+      ansible.builtin.wait_for:
+        timeout: "{{ software_install_rescue_timeout }}"
 
   always:
 
@@ -109,14 +124,16 @@
 
     - name: install | Gather facts.
       cisco.ios.ios_facts:
-        gather_subset: min
+        gather_subset:
+          - min
+      register: software_result
       until: not software_result['failed']
       retries: 5
       delay: 10
-      register: software_result
 
     - name: install | Assert that the software upgrade succeeded.
       ansible.builtin.assert:
-        that: ansible_facts['net_version'] is ansible.builtin.version(software_version)
+        that:
+          - ansible_facts['net_version'] is ansible.builtin.version(software_version)
         success_msg: Upgrade to {{ software_version }} was successful.
         fail_msg: Unable to upgrade. Device is running {{ ansible_facts['net_version'] }}. Expected {{ software_version }}.
