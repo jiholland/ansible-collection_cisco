@@ -11,12 +11,14 @@ software_install_rescue_timeout: 180
 software_reboot_delay: 30
 software_reboot_timeout: 900
 
-# Used when scheduling the upgrade
+# Used when scheduling the upgrade.
 software_playbook_name: playbook_software_upgrade.yml
 
-# Cisco Nexus related defaults
-software_vrf: management
-software_issu: false  # Upgrade using In Service Software Upgrade (ISSU)
+# Upgrade using In Service Software Upgrade (ISSU).
+software_issu: false
+
+# Vrf used for the tftp server.
+# software_vrf: management
 
 # software_version: 17.09.04
 # software_image: cat9k_iosxe.17.09.04.SPA.bin
