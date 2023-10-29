@@ -5,6 +5,14 @@ Test.Test Release Notes
 .. contents:: Topics
 
 
+v23.0.5
+=======
+
+Minor Changes
+-------------
+
+- software - Added support for vrf on catalyst when uploading image.
+
 v23.0.4
 =======
 

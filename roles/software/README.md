@@ -21,10 +21,10 @@ Role Variables
 - software_reboot_delay
 - software_reboot_timeout
 - software_playbook_name
+- software_issu
+- software_vrf
 - software_version
 - software_image
-- software_vrf
-- software_issu
 
 Dependencies
 ------------
@@ -37,7 +37,7 @@ Example Playbook
 ---
 - name: Upgrade software to compliant version.
   hosts: "{{ target }}"
-  strategy: linear
+  strategy: ansible.builtin.free
   gather_facts: true
 
   roles:
