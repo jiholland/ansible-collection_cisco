@@ -1,13 +1,13 @@
-🅰️🅰️🅰️ jiholland.tacacs
-====================
+jiholland.tacacs
+================
 
 Ensure tacacs authentication.
 
 Requirements
 ------------
 
-💿 [Cisco IOS Collection](https://galaxy.ansible.com/cisco/ios)<br>
-💿 [Cisco NXOS Collection](https://galaxy.ansible.com/cisco/nxos)
+💿 [Cisco IOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/ios)<br>
+💿 [Cisco NXOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/nxos)<br>
 
 Role Variables
 --------------
@@ -28,8 +28,8 @@ Example Playbook
 ```YAML
 ---
 - name: Ensure tacacs authentication.
-  hosts: "{{ target }}"
   gather_facts: false
+  hosts: "{{ target }}"
 
   roles:
     - jiholland.cisco.tacacs

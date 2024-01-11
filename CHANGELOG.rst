@@ -5,6 +5,16 @@ Test.Test Release Notes
 .. contents:: Topics
 
 
+v24.0.0
+=======
+
+Minor Changes
+-------------
+
+- all roles - update doc
+- interface_description - cleanup templates
+- tacacs - cleanup templates
+
 v23.0.5
 =======
 

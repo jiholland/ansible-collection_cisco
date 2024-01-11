@@ -1,7 +1,11 @@
 aaa group server tacacs+ {{ tacacs_group }}
-{% for tacacs_item in tacacs_servers_output['stdout_lines'][0] if tacacs_item.split(' ')[2] is not in (tacacs_servers | map(attribute='ip')) %}
+{% for tacacs_item in tacacs_servers_output['stdout_lines'][0] %}
+{% if tacacs_item.split(' ')[2] is not in (tacacs_servers | map(attribute='ip')) %}
  no server {{ tacacs_item.split(' ')[2] }}
+{% endif %}
 {% endfor %}
-{% for tacacs_item in tacacs_servers_output['stdout_lines'][0] if tacacs_item.split(' ')[2] is not in (tacacs_servers | map(attribute='ip')) %}
+{% for tacacs_item in tacacs_servers_output['stdout_lines'][0] %}
+{% if tacacs_item.split(' ')[2] is not in (tacacs_servers | map(attribute='ip')) %}
 no tacacs-server host {{ tacacs_item.split(' ')[2] }}
+{% endif %}
 {% endfor %}

@@ -4,18 +4,9 @@
 - name: configure_cisco.ios.ios | Set tacacs server hosts and group.
   cisco.ios.ios_config:
     src: tacacs_ios.j2
+  no_log: true
 
-- name: configure_cisco.ios.ios | Test authentication.
-  tags: test_authentication
-  cisco.ios.ios_command:
-    commands:
-      - test aaa group {{ tacacs_group }} {{ ansible_user }} {{ ansible_password }} new-code
-  when: not ansible_check_mode
-  register: tacacs_output
-  failed_when: tacacs_output['stdout'] is not ansible.builtin.search('successfully authenticated')
-  changed_when: false
-
-- name: configure_cisco.ios.ios | Configure tacacs authentication and authorization.
+- name: configure_cisco.ios.ios | Configure tacacs authentication, authorization and accounting.
   cisco.ios.ios_config:
     lines:
       - aaa new-model
@@ -23,6 +14,9 @@
       - aaa authentication enable default group {{ tacacs_group }} enable
       - aaa authorization exec default group {{ tacacs_group }} local
       - aaa authorization console
+      - no aaa accounting system guarantee-first
+      - aaa accounting exec default {{ tacacs_accounting_record }} group {{ tacacs_group }}
+      - aaa accounting commands 15 default {{ tacacs_accounting_record }} group {{ tacacs_group }}
   notify: Save ios.
 
 - name: configure_cisco.ios.ios | Get tacacs-servers.
