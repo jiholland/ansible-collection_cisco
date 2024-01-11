@@ -6,9 +6,9 @@ Backup running-configuration to git repository.
 Requirements
 ------------
 
-💿 [Cisco IOS Collection](https://galaxy.ansible.com/cisco/ios)<br>
-💿 [Cisco NXOS Collection](https://galaxy.ansible.com/cisco/nxos)<br>
-💿 [Community General](https://galaxy.ansible.com/community/general)
+💿 [Cisco IOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/ios)<br>
+💿 [Cisco NXOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/nxos)<br>
+💿 [Community General](https://galaxy.ansible.com/ui/repo/published/community/general)
 
 Role Variables
 --------------
@@ -30,7 +30,7 @@ None.
 
 Example Playbook
 ----------------
-```yaml
+```YAML
 ---
 - name: Backup config from target to git.
   hosts: "{{ target }}"

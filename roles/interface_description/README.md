@@ -1,13 +1,13 @@
 jiholland.interface_description
-================================
+===============================
 
 Set interface description based on CDP and LLDP.
 
 Requirements
 ------------
 
-💿 [Cisco IOS Collection](https://galaxy.ansible.com/cisco/ios)<br>
-💿 [Cisco NXOS Collection](https://galaxy.ansible.com/cisco/nxos)
+💿 [Cisco IOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/ios)<br>
+💿 [Cisco NXOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/nxos)<br>
 
 Role Variables
 --------------
@@ -21,11 +21,11 @@ None.
 
 Example Playbook
 ----------------
-```yaml
+```YAML
 ---
 - name: Set interface description based on CDP and LLDP
-  hosts: "{{ target }}"
   gather_facts: false
+  hosts: "{{ target }}"
 
   roles:
     - jiholland.cisco.interface_description

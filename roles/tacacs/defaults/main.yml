@@ -1,8 +1,6 @@
 ---
 # defaults file for tacacs
 
-tacacs_file: "{{ role_path }}/tasks/configure_{{ ansible_network_os }}.yml"
-
 tacacs_group: ISE-GRP-TACACS
 
 tacacs_servers:

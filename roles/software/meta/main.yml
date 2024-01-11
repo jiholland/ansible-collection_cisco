@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: software
+  role_name: upgrade
   author: Jørn Ivar Holland
   description: Upgrade software on Cisco Catalyst and Nexus devices.
   license: BSD-3-Clause
@@ -13,9 +13,9 @@ galaxy_info:
       version:
         - all
   galaxy_tags:
-    - networking
-    - cisco
     - catalyst
+    - cisco
+    - networking
     - nexus
     - software
     - upgrade

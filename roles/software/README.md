@@ -6,9 +6,9 @@ Upgrade software on Cisco Catalyst and Nexus devices.
 Requirements
 ------------
 
-💿 [Cisco IOS Collection](https://galaxy.ansible.com/cisco/ios) <br>
-💿 [Cisco NXOS Collection](https://galaxy.ansible.com/cisco/nxos) <br>
-💿 [Ansible Posix Collection](https://galaxy.ansible.com/ansible/posix) <br>
+💿 [Cisco IOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/ios)<br>
+💿 [Cisco NXOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/nxos)<br>
+💿 [Ansible Posix Collection](https://galaxy.ansible.com/ui/repo/published/ansible/posix)<br>
 
 Role Variables
 --------------
@@ -17,7 +17,7 @@ Role Variables
 - software_upload_timeout
 - software_install_timeout
 - software_install_issu_timeout
-- software_install_rescue_timeout
+- software_install_rescue_pause
 - software_reboot_delay
 - software_reboot_timeout
 - software_playbook_name
@@ -33,27 +33,27 @@ None.
 
 Example Playbook
 ----------------
-```yaml
+```YAML
 ---
 - name: Upgrade software to compliant version.
+  gather_facts: true
   hosts: "{{ target }}"
   strategy: ansible.builtin.free
-  gather_facts: true
 
   roles:
     - jiholland.cisco.software
 ```
 🧪 Run playbook in check-mode to verify compliance without making any changes:
 
-    ansible-playbook playbook_software_upgrade.yml -e "target=switch01" --check
+    ansible-playbook playbook.yml -e "target=switch01" --check
 
 🌱 Use tag **upload** to upload without installing:
 
-    ansible-playbook playbook_software_upgrade.yml -e "target=switch01" --tags upload
+    ansible-playbook playbook.yml -e "target=switch01" --tags upload
 
 📅 Use tag **schedule** to schedule the installation:
 
-    ansible-playbook playbook_software_upgrade.yml -e "target=switch01" --tags schedule
+    ansible-playbook playbook.yml -e "target=switch01" --tags schedule
 
 💯 Run playbook without any tags to install immediately.
 

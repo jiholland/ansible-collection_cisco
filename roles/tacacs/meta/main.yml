@@ -13,13 +13,13 @@ galaxy_info:
       versions:
         - all
   galaxy_tags:
-    - networking
-    - cisco
-    - catalyst
-    - nexus
-    - authentication
-    - tacacs
     - aaa
+    - authentication
+    - catalyst
+    - cisco
+    - networking
+    - nexus
+    - tacacs
 
 
 dependencies: []

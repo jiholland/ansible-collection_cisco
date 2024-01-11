@@ -24,9 +24,23 @@
   ansible.builtin.git:
     repo: "{{ backup_git_repo }}"
     dest: "{{ backup_temp_dir_output['path'] }}"
-    version: "{{ backup_git_version }}"
     accept_newhostkey: "{{ backup_git_accept_newhostkey }}"
     depth: 1
+    version: "{{ backup_git_version }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Ensure that git user.name and user.email is defined.
+  community.general.git_config:
+    name: "{{ backup_item['name'] }}"
+    value: "{{ backup_item['value'] }}"
+    scope: local
+    repo: "{{ backup_temp_dir_output['path'] }}"
+    state: present
+  loop: "{{ backup_git_config }}"
+  loop_control:
+    loop_var: backup_item
+    label: "{{ backup_item['value'] }}"
   delegate_to: localhost
   run_once: true
 

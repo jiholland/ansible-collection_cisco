@@ -12,7 +12,7 @@ software_reboot_delay: 30
 software_reboot_timeout: 900
 
 # Used when scheduling the upgrade.
-software_playbook_name: playbook_software_upgrade.yml
+software_playbook_name: playbook.yml
 
 # Upgrade using In Service Software Upgrade (ISSU).
 software_issu: false
