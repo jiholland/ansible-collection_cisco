@@ -5,6 +5,14 @@ Test.Test Release Notes
 .. contents:: Topics
 
 
+v24.0.1
+=======
+
+Minor Changes
+-------------
+
+- all roles - prefix internal variables with double underscore
+
 v24.0.0
 =======
 

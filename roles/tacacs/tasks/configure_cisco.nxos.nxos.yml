@@ -19,7 +19,7 @@
   cisco.nxos.nxos_command:
     commands:
       - show run tacacs+ | include tacacs-server
-  register: tacacs_servers_output
+  register: __tacacs_servers_output
 
 - name: configure_cisco.nxos.nxos | Remove obsolete tacacs-servers.
   cisco.nxos.nxos_config:

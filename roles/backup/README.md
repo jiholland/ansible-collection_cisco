@@ -17,8 +17,6 @@ Role Variables
 - backup_git_repo
 - backup_git_version
 - backup_git_accept_newhostkey
-- backup_time
-- backup_filename
 - backup_cron_weekday
 - backup_cron_hour
 - backup_cron_minute

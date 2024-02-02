@@ -1,7 +1,7 @@
 ---
 namespace: jiholland
 name: cisco
-version: 24.0.0
+version: 24.0.1
 readme: README.md
 
 authors:
@@ -22,10 +22,10 @@ tags:
   - tacacs
 
 dependencies:
-  ansible.posix: ">=1.5.4"
-  cisco.ios: ">=6.1.0"
-  cisco.nxos: ">=6.0.0"
-  community.general: ">=8.2.0"
+  ansible.posix: ">=1.5.0"
+  cisco.ios: ">=5.0.0"
+  cisco.nxos: ">=5.0.0"
+  community.general: ">=7.0.0"
 
 repository: https://github.com/jiholland/ansible-collection_cisco
 issues: https://github.com/jiholland/ansible-collection_cisco/issues

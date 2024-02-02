@@ -20,7 +20,7 @@
             prompt: Proceed with reload
             answer: "\r"
       changed_when: true
-      register: software_installed
+      register: __software_installed_output
 
     - name: install | Wait for device to reboot.
       ansible.builtin.wait_for_connection:
@@ -50,7 +50,7 @@
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_install_timeout }}"
-      register: software_installed
+      register: __software_installed_output
 
     - name: install | Install compliant OS using ISSU.
       cisco.ios.ios_command:
@@ -60,7 +60,7 @@
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_install_issu_timeout }}"
-      register: software_installed
+      register: __software_installed_output
 
   rescue:
 
@@ -92,7 +92,7 @@
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_install_timeout }}"
-      register: software_installed
+      register: __software_installed_output
 
     - name: install | Install compliant OS none-disruptively using ISSU.
       cisco.nxos.nxos_command:
@@ -102,7 +102,7 @@
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_install_issu_timeout }}"
-      register: software_installed
+      register: __software_installed_output
 
   rescue:
 
@@ -119,15 +119,15 @@
 
 
 - name: install | Assert the software upgrade.
-  when: software_installed is defined
+  when: __software_installed_output is defined
   block:
 
     - name: install | Gather facts.
       cisco.ios.ios_facts:
         gather_subset:
           - min
-      register: software_result
-      until: not software_result['failed']
+      register: __software_result
+      until: not __software_result['failed']
       retries: 5
       delay: 10
 

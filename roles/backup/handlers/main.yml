@@ -5,10 +5,10 @@
   # noqa command-instead-of-module
   ansible.builtin.command:
     cmd: "{{ backup_item }}"
-    chdir: "{{ backup_temp_dir_output['path'] }}/{{ backup_time }}"
+    chdir: "{{ __backup_temp_dir_output['path'] }}/{{ ansible_facts['date_time']['date'] }}"
   loop:
     - git add .
-    - git commit -m 'Backup created at {{ backup_time }}.'
+    - git commit -m 'feat: backup at {{ ansible_facts['date_time']['date'] }}'
     - git push origin {{ backup_git_version }}
   loop_control:
     loop_var: backup_item
@@ -18,7 +18,7 @@
 
 - name: Remove temporary backup directory from localhost.
   ansible.builtin.file:
-    path: "{{ backup_temp_dir_output['path'] }}"
+    path: "{{ __backup_temp_dir_output['path'] }}"
     state: absent
   delegate_to: localhost
   run_once: true

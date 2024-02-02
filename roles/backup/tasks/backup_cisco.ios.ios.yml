@@ -5,6 +5,6 @@
   cisco.ios.ios_config:
     backup: true
     backup_options:
-      filename: "{{ backup_filename }}"
-      dir_path: "{{ backup_temp_dir_output['path'] }}/{{ backup_time }}"
+      filename: "{{ __backup_filename }}"
+      dir_path: "{{ __backup_temp_dir_output['path'] }}/{{ ansible_facts['date_time']['date'] }}"
   notify: Push to git.
