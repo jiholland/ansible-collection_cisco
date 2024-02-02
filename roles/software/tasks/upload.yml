@@ -6,13 +6,13 @@
     commands:
       - "show flash: | include {{ software_image }}"
   when: ansible_network_os is eq('cisco.ios.ios')
-  register: software_flash_output
+  register: __software_flash_output
 
 
 - name: upload | Upload software image.
   when:
     - ansible_network_os is eq('cisco.ios.ios')
-    - software_flash_output['stdout'][0] is not ansible.builtin.search(software_image)
+    - __software_flash_output['stdout'][0] is not ansible.builtin.search(software_image)
   block:
 
     - name: upload | Remove inactive software.
@@ -62,7 +62,7 @@
       cisco.nxos.nxos_command:
         commands:
           - "dir bootflash: | include {{ software_image }}"
-      register: software_bootflash_output
+      register: __software_bootflash_output
 
     - name: upload | Upload compliant software image.
       cisco.nxos.nxos_file_copy:
@@ -73,4 +73,4 @@
         remote_scp_server_user: "{{ ansible_user }}"
         remote_scp_server_password: "{{ ansible_password }}"
         vrf: "{{ software_vrf | default('management') }}"
-      when: software_bootflash_output['stdout'][0] is not ansible.builtin.search(software_image)
+      when: __software_bootflash_output['stdout'][0] is not ansible.builtin.search(software_image)

@@ -17,13 +17,13 @@
     state: directory
   delegate_to: localhost
   run_once: true
-  register: backup_temp_dir_output
+  register: __backup_temp_dir_output
   notify: Remove temporary backup directory from localhost.
 
 - name: Checkout git repo to localhost.
   ansible.builtin.git:
     repo: "{{ backup_git_repo }}"
-    dest: "{{ backup_temp_dir_output['path'] }}"
+    dest: "{{ __backup_temp_dir_output['path'] }}"
     accept_newhostkey: "{{ backup_git_accept_newhostkey }}"
     depth: 1
     version: "{{ backup_git_version }}"
@@ -35,7 +35,7 @@
     name: "{{ backup_item['name'] }}"
     value: "{{ backup_item['value'] }}"
     scope: local
-    repo: "{{ backup_temp_dir_output['path'] }}"
+    repo: "{{ __backup_temp_dir_output['path'] }}"
     state: present
   loop: "{{ backup_git_config }}"
   loop_control:
@@ -46,7 +46,7 @@
 
 - name: Create backup directory for current time.
   ansible.builtin.file:
-    path: "{{ backup_temp_dir_output['path'] }}/{{ backup_time }}"
+    path: "{{ __backup_temp_dir_output['path'] }}/{{ ansible_facts['date_time']['date'] }}"
     state: directory
     mode: u=rwx,g=rx,o=rx
   delegate_to: localhost

@@ -7,9 +7,6 @@ backup_git_repo: git@github.com:changme.git
 backup_git_version: main
 backup_git_accept_newhostkey: true
 
-backup_time: "{{ ansible_facts['date_time']['date'] }}"
-backup_filename: "{{ inventory_hostname }}_{{ backup_time }}.txt"
-
 backup_cron_weekday: '0'  # Sunday
 backup_cron_hour: '2'
 backup_cron_minute: '0'

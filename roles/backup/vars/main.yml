@@ -1,0 +1,4 @@
+---
+# vars file for backup
+
+__backup_filename: "{{ inventory_hostname }}_{{ ansible_facts['date_time']['date'] }}.txt"

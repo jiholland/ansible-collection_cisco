@@ -3,13 +3,13 @@
 
 tacacs_group: ISE-GRP-TACACS
 
-tacacs_servers:
-  - name: ISE-1
-    ip: 10.0.0.1
-  - name: ISE-2
-    ip: 10.0.0.2
+# tacacs_servers:
+#   - name: ISE-1
+#     ip: 10.0.0.1
+#   - name: ISE-2
+#     ip: 10.0.0.2
 
-tacacs_key: topsecret
+# tacacs_key: topsecret
 
 # tacacs_source_interface: mgmt0
 # tacacs_vrf: management
