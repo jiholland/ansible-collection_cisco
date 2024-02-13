@@ -3,12 +3,12 @@
 
 - name: schedule_upgrade | Pause to get input.
   ansible.builtin.pause:
-    prompt: Enter the number of minutes in which to schedule upgrade for {{ target }}
+    prompt: Enter the number of minutes in which to schedule upgrade for {{ software_target }}
   register: __software_input
 
 - name: schedule_upgrade | Schedule upgrade.
   ansible.posix.at:
-    command: cd {{ playbook_dir }} && ansible-playbook {{ software_playbook_name }} -e 'target={{ target }}'
+    command: cd {{ playbook_dir }} && ansible-playbook {{ software_playbook_name }} -e 'target={{ software_target }}'
     count: "{{ __software_input['user_input'] }}"
     units: minutes
     state: present
