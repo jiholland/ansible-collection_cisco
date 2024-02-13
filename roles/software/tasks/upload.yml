@@ -34,7 +34,7 @@
     - name: upload | Upload compliant software image.
       cisco.ios.ios_command:
         commands:
-          - command: copy tftp://{{ software_tftp_server }}/{{ software_image }} flash:/
+          - command: copy tftp://{{ software_server }}/{{ software_image }} flash:/
             prompt: Destination filename
             answer: "\r"
       when: software_vrf is undefined
@@ -45,7 +45,7 @@
     - name: upload | Upload compliant software image using vrf.
       cisco.ios.ios_command:
         commands:
-          - command: copy tftp://{{ software_tftp_server }}/{{ software_image }} flash:/ vrf {{ software_vrf }}
+          - command: copy tftp://{{ software_server }}/{{ software_image }} flash:/ vrf {{ software_vrf }}
             prompt: Destination filename
             answer: "\r"
       when: software_vrf is defined
@@ -68,9 +68,9 @@
       cisco.nxos.nxos_file_copy:
         file_pull: true
         file_pull_timeout: "{{ software_upload_timeout }}"
-        remote_file: /var/lib/tftpboot/{{ software_image }}
-        remote_scp_server: "{{ software_tftp_server }}"
-        remote_scp_server_user: "{{ ansible_user }}"
-        remote_scp_server_password: "{{ ansible_password }}"
-        vrf: "{{ software_vrf | default('management') }}"
+        remote_file: "{{ software_server_path }}/{{ software_image }}"
+        remote_scp_server: "{{ software_server }}"
+        remote_scp_server_user: "{{ software_server_user }}"
+        remote_scp_server_password: "{{ software_server_password }}"
+        vrf: "{{ software_vrf }}"
       when: __software_bootflash_output['stdout'][0] is not ansible.builtin.search(software_image)

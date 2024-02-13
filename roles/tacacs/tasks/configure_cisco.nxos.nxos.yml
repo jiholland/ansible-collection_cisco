@@ -1,6 +1,12 @@
 ---
 # tasks file for tacacs
 
+- name: configure_cisco.nxos.nxos | Enable tacacs feature.
+  cisco.nxos.nxos_feature:
+    feature: tacacs
+    state: enabled
+  notify: Save nxos.
+
 - name: configure_cisco.nxos.nxos | Set tacacs server hosts and group.
   cisco.nxos.nxos_config:
     src: tacacs_nxos.j2
@@ -22,6 +28,21 @@
   register: __tacacs_servers_output
 
 - name: configure_cisco.nxos.nxos | Remove obsolete tacacs-servers.
-  cisco.nxos.nxos_config:
-    src: tacacs_obsolete_nxos.j2
-  notify: Save nxos.
+  block:
+
+    - name: configure_cisco.nxos.nxos | Remove obsolete tacacs-servers and remove from aaa group.
+      cisco.nxos.nxos_config:
+        src: tacacs_obsolete_nxos.j2
+      notify: Save nxos.
+
+  rescue:
+
+    - name: configure_cisco.nxos.nxos | Remove obsolete tacacs-servers.
+      cisco.nxos.nxos_config:
+        lines:
+          - no tacacs-server host {{ tacacs_item.split(' ')[2] }}
+      when: tacacs_item.split(' ')[2] is not in (tacacs_servers | map(attribute='ip'))
+      loop: "{{ __tacacs_servers_output['stdout_lines'][0] }}"
+      loop_control:
+        loop_var: tacacs_item
+      notify: Save nxos.

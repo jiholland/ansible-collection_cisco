@@ -1,4 +1,3 @@
-ip tacacs source-interface {{ tacacs_source_interface }}
 {% for tacacs_item in tacacs_servers %}
 {% if not ansible_check_mode %}
 tacacs-server host {{ tacacs_item['ip'] }} key {{ tacacs_key }}

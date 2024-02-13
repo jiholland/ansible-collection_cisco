@@ -13,18 +13,21 @@ Requirements
 Role Variables
 --------------
 
-- software_tftp_server
+- software_version
+- software_image
+- software_vrf
+- software_server
+- software_server_path
+- software_server_user
+- software_server_password
 - software_upload_timeout
 - software_install_timeout
-- software_install_issu_timeout
 - software_install_rescue_pause
 - software_reboot_delay
 - software_reboot_timeout
 - software_playbook_name
 - software_issu
-- software_vrf
-- software_version
-- software_image
+- software_target
 
 Dependencies
 ------------

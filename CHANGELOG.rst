@@ -5,6 +5,15 @@ Test.Test Release Notes
 .. contents:: Topics
 
 
+v24.2.0
+=======
+
+Minor Changes
+-------------
+
+- software_upgrade role - defaults and use module for nxos installation
+- tacacs role - vrf fix for nxos
+
 v24.0.1
 =======
 

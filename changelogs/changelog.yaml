@@ -66,3 +66,11 @@ releases:
     fragments:
     - fix.yml
     release_date: '2024-02-02'
+  24.2.0:
+    changes:
+      minor_changes:
+      - software_upgrade role - defaults and use module for nxos installation
+      - tacacs role - vrf fix for nxos
+    fragments:
+    - fix.yml
+    release_date: '2024-02-13'
