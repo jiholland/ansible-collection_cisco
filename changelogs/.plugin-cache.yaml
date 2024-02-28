@@ -1,5 +1,17 @@
 objects:
-  role: {}
+  role:
+    backup:
+      description: null
+      name: backup
+      version_added: null
+    software:
+      description: null
+      name: software
+      version_added: null
+    tacacs:
+      description: null
+      name: tacacs
+      version_added: null
 plugins:
   become: {}
   cache: {}
@@ -16,4 +28,4 @@ plugins:
   strategy: {}
   test: {}
   vars: {}
-version: 24.2.0
+version: 24.2.1

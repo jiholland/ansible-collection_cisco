@@ -74,3 +74,10 @@ releases:
     fragments:
     - fix.yml
     release_date: '2024-02-13'
+  24.2.1:
+    changes:
+      minor_changes:
+      - all roles - added arg spec in meta for required arguments
+    fragments:
+    - arg_spec.yml
+    release_date: '2024-02-28'

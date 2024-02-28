@@ -1,0 +1,27 @@
+---
+# Argmuent specification file for software
+
+argument_specs:
+  main:
+    options:
+
+      software_version:
+        type: str
+        required: true
+
+      software_image:
+        type: str
+        required: true
+
+      software_server:
+        description: The server where the software image is stored.
+        type: str
+        required: true
+
+      software_issu:
+        description: Upgrade using In Service Software Upgrade (ISSU).
+        type: str
+        default: "no"
+        choices:
+          - "yes"
+          - "no"

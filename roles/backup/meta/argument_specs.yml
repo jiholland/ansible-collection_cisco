@@ -1,0 +1,11 @@
+---
+# Argmuent specification file for backup
+
+argument_specs:
+  main:
+    options:
+
+      backup_git_repo:
+        description: Git repo for backup.
+        type: str
+        required: true

@@ -5,6 +5,14 @@ Test.Test Release Notes
 .. contents:: Topics
 
 
+v24.2.1
+=======
+
+Minor Changes
+-------------
+
+- all roles - added arg spec in meta for required arguments
+
 v24.2.0
 =======
 

@@ -4,10 +4,10 @@
 tacacs_group: ISE-GRP-TACACS
 
 # tacacs_servers:
-#   - name: ISE-1
-#     ip: 10.0.0.1
-#   - name: ISE-2
-#     ip: 10.0.0.2
+#   - name: ISE-PRI
+#     ip: 192.0.2.1
+#   - name: ISE-SEC
+#     ip: 192.0.2.2
 
 # tacacs_key: topsecret
 

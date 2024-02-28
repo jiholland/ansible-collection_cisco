@@ -4,11 +4,11 @@
 # software_version: 17.09.04
 # software_image: cat9k_iosxe.17.09.04.SPA.bin
 
-# VRF used ti reach the server hosting the software image.
+# VRF used to reach the server hosting the software image.
 # software_vrf: management
 
-# The server where the compliant images are stored.
-software_server: 10.10.10.10
+# The server where the software image is stored.
+# software_server: 192.0.2.10
 
 software_server_path: /var/lib/tftpboot
 software_server_user: "{{ ansible_user }}"

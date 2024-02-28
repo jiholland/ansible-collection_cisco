@@ -1,0 +1,15 @@
+---
+# Argmuent specification file for tacacs
+
+argument_specs:
+  main:
+    options:
+
+      tacacs_servers:
+        type: list
+        elements: dict
+        required: true
+
+      tacacs_key:
+        type: str
+        required: true

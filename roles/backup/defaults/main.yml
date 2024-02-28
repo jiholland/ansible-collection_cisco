@@ -3,7 +3,7 @@
 
 backup_temp_dir: /tmp
 
-backup_git_repo: git@github.com:changme.git
+# backup_git_repo: git@github.com:changme.git
 backup_git_version: main
 backup_git_accept_newhostkey: true
 
