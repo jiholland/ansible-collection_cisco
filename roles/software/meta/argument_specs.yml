@@ -1,5 +1,5 @@
 ---
-# Argmuent specification file for software
+# Argument specification file for software
 
 argument_specs:
   main:
@@ -14,14 +14,14 @@ argument_specs:
         required: true
 
       software_server:
-        description: The server where the software image is stored.
+        description: The server where the image are stored.
         type: str
         required: true
 
       software_issu:
-        description: Upgrade using In Service Software Upgrade (ISSU).
+        description: Install using In Service Software Upgrade (ISSU) or not.
         type: str
         default: "no"
         choices:
-          - "yes"
           - "no"
+          - "yes"

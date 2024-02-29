@@ -45,19 +45,21 @@
       cisco.ios.ios_command:
         commands:
           - install add file flash:{{ software_image }} activate commit prompt-level none
-      when: software_issu is false
+      when: software_issu is eq('no')
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_install_timeout }}"
+        ansible_connect_timeout: "{{ software_install_timeout }}"
 
     - name: install | Install compliant OS using ISSU.
       cisco.ios.ios_command:
         commands:
           - install add file flash:{{ software_image }} activate issu commit
-      when: software_issu is true
+      when: software_issu is eq('yes')
       changed_when: true
       vars:
-        ansible_command_timeout: "{{ software_install_issu_timeout }}"
+        ansible_command_timeout: "{{ software_install_timeout }}"
+        ansible_connect_timeout: "{{ software_install_timeout }}"
 
   rescue:
 

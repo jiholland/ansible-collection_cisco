@@ -8,7 +8,6 @@
   when: ansible_network_os is eq('cisco.ios.ios')
   register: __software_flash_output
 
-
 - name: upload | Upload software image.
   when:
     - ansible_network_os is eq('cisco.ios.ios')
@@ -41,6 +40,7 @@
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_upload_timeout }}"
+        ansible_connect_timeout: "{{ software_upload_timeout }}"
 
     - name: upload | Upload compliant software image using vrf.
       cisco.ios.ios_command:
@@ -52,6 +52,7 @@
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_upload_timeout }}"
+        ansible_connect_timeout: "{{ software_upload_timeout }}"
 
 
 - name: upload | Upload software image.

@@ -3,4 +3,4 @@
 
 - name: Include OS-specific tasks.
   ansible.builtin.include_tasks:
-    file: configure_{{ ansible_network_os }}.yml
+    file: "{{ role_path }}/tasks/configure_{{ ansible_network_os }}.yml"

@@ -5,6 +5,14 @@ Test.Test Release Notes
 .. contents:: Topics
 
 
+v24.2.2
+=======
+
+Minor Changes
+-------------
+
+- various bugfixes and improvements
+
 v24.2.1
 =======
 
