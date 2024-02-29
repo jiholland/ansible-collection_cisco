@@ -30,7 +30,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: Ensure that git user.name and user.email is defined.
+- name: Ensure that git user.name and user.email is defined for repo.
   community.general.git_config:
     name: "{{ backup_item['name'] }}"
     value: "{{ backup_item['value'] }}"
@@ -54,7 +54,7 @@
 
 - name: Include OS-specific tasks for taking backup.
   ansible.builtin.include_tasks:
-    file: backup_{{ ansible_network_os }}.yml
+    file: "{{ role_path }}/tasks/backup_{{ ansible_network_os }}.yml"
 
 - name: Schedule backup using cron.
   tags: [never, backup_schedule]

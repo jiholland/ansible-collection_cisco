@@ -8,7 +8,6 @@ Requirements
 
 💿 [Cisco IOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/ios)<br>
 💿 [Cisco NXOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/nxos)<br>
-💿 [Community General](https://galaxy.ansible.com/ui/repo/published/community/general)
 
 Role Variables
 --------------
@@ -28,15 +27,14 @@ None.
 
 Example Playbook
 ----------------
-```YAML
+```yaml
 ---
 - name: Backup config from target to git.
-  hosts: "{{ target }}"
-  strategy: linear
   gather_facts: false
+  hosts: "{{ target }}"
 
   roles:
-    - jiholland.cisco.backup
+    - role: jiholland.cisco.backup
       when: not ansible_check_mode
 ```
 📅 Use tag **backup_schedule** to schedule the backup using cron.

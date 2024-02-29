@@ -13,13 +13,13 @@ galaxy_info:
       versions:
         - all
   galaxy_tags:
-    - networking
-    - cisco
     - catalyst
-    - nexus
-    - interface
     - cdp
+    - cisco
+    - interface
     - lldp
+    - networking
+    - nexus
 
 
 dependencies: []

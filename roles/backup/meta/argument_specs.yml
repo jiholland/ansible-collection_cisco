@@ -1,11 +1,22 @@
 ---
-# Argmuent specification file for backup
+# Argument specification file for backup
 
 argument_specs:
   main:
     options:
 
       backup_git_repo:
-        description: Git repo for backup.
         type: str
-        required: true
+
+      backup_git_version:
+        type: str
+        default: main
+
+      backup_git_accept_newhostkey:
+        type: bool
+        default: true
+
+      backup_git_config:
+        description: Used for Ansible automation hub.
+        type: list
+        elements: dict

@@ -13,10 +13,10 @@ galaxy_info:
       versions:
         - all
   galaxy_tags:
-    - networking
     - backup
-    - cisco
     - catalyst
+    - cisco
+    - networking
     - nexus
 
 
