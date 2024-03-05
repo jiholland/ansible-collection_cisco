@@ -6,7 +6,8 @@
     gather_subset:
       - interfaces
   vars:
-    ansible_command_timeout: 60
+    ansible_command_timeout: "{{ interface_description_timeout }}"
+    ansible_connect_timeout: "{{ interface_description_timeout }}"
 
 - name: configure_cisco.nxos.nxos | Set interface description.
   cisco.nxos.nxos_interfaces:

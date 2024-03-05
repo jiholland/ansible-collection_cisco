@@ -12,7 +12,8 @@ Requirements
 Role Variables
 --------------
 
-- interface_description
+- interface_description_ios
+- interface_description_nxos
 
 Dependencies
 ------------
@@ -21,7 +22,7 @@ None.
 
 Example Playbook
 ----------------
-```YAML
+```yaml
 ---
 - name: Set interface description based on CDP and LLDP
   gather_facts: false

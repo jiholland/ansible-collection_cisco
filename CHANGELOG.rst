@@ -5,6 +5,15 @@ Test.Test Release Notes
 .. contents:: Topics
 
 
+v24.3.0
+=======
+
+Minor Changes
+-------------
+
+- all roles - minor improvements
+- backup role - check mode
+
 v24.2.2
 =======
 

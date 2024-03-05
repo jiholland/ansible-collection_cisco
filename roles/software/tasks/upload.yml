@@ -20,10 +20,11 @@
           - command: install remove inactive
             prompt: Do you want to remove the above files
             answer: y
+      when: ansible_facts['net_iostype'] is eq('IOS-XE')
       changed_when: true
       vars:
-        ansible_command_timeout: 1800
-      when: ansible_facts['net_iostype'] is eq('IOS-XE')
+        ansible_command_timeout: "{{ software_upload_timeout }}"
+        ansible_connect_timeout: "{{ software_upload_timeout }}"
 
     - name: upload | Ensure maximum blocksize for TFTP.
       cisco.ios.ios_config:

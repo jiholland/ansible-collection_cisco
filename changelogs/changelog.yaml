@@ -88,3 +88,11 @@ releases:
     fragments:
     - fix.yml
     release_date: '2024-02-29'
+  24.3.0:
+    changes:
+      minor_changes:
+      - all roles - minor improvements
+      - backup role - check mode
+    fragments:
+    - fix.yml
+    release_date: '2024-03-05'

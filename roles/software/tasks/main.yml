@@ -31,5 +31,6 @@
   tags: [never, schedule]
   ansible.builtin.import_tasks:
     file: schedule_upgrade.yml
+  when: not ansible_check_mode
   delegate_to: localhost
   run_once: true
