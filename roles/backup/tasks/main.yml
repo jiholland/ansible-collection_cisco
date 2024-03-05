@@ -19,6 +19,7 @@
   run_once: true
   register: __backup_temp_dir_output
   notify: Remove temporary backup directory from localhost.
+  check_mode: false
 
 - name: Checkout git repo to localhost.
   ansible.builtin.git:
@@ -27,20 +28,6 @@
     accept_newhostkey: "{{ backup_git_accept_newhostkey }}"
     depth: 1
     version: "{{ backup_git_version }}"
-  delegate_to: localhost
-  run_once: true
-
-- name: Ensure that git user.name and user.email is defined for repo.
-  community.general.git_config:
-    name: "{{ backup_item['name'] }}"
-    value: "{{ backup_item['value'] }}"
-    scope: local
-    repo: "{{ __backup_temp_dir_output['path'] }}"
-    state: present
-  loop: "{{ backup_git_config }}"
-  loop_control:
-    loop_var: backup_item
-    label: "{{ backup_item['value'] }}"
   delegate_to: localhost
   run_once: true
 

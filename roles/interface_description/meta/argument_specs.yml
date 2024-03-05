@@ -1,0 +1,12 @@
+---
+# Argument specification file for interface_description
+
+argument_specs:
+  main:
+    options:
+
+      interface_description_timeout:
+        description: Timeout for gathering interface facts
+        type: int
+        default: 60
+        required: true
