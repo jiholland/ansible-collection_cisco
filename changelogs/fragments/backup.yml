@@ -1,0 +1,2 @@
+bugfixes:
+  - backup role - check_mode for handler
