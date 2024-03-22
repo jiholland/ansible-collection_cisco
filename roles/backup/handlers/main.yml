@@ -22,3 +22,4 @@
     state: absent
   delegate_to: localhost
   run_once: true
+  check_mode: false
