@@ -4,6 +4,18 @@ Test.Test Release Notes
 
 .. contents:: Topics
 
+v24.4.0
+=======
+
+Minor Changes
+-------------
+
+- all roles - use quotes for user-side strings such as descriptions, names, and messages
+
+Bugfixes
+--------
+
+- backup role - check_mode for handler
 
 v24.3.0
 =======
@@ -114,3 +126,4 @@ Minor Changes
 
 v23.0.0
 =======
+

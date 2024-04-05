@@ -15,16 +15,16 @@
 - name: configure_cisco.nxos.nxos | Configure tacacs authentication and accounting.
   cisco.nxos.nxos_config:
     lines:
-      - aaa authentication login default group {{ tacacs_group }} local
-      - aaa authentication login console group {{ tacacs_group }} local
-      - aaa authentication login error-enable
-      - aaa accounting default group {{ tacacs_group }}
+      - "aaa authentication login default group {{ tacacs_group }} local"
+      - "aaa authentication login console group {{ tacacs_group }} local"
+      - "aaa authentication login error-enable"
+      - "aaa accounting default group {{ tacacs_group }}"
   notify: Save nxos.
 
 - name: configure_cisco.nxos.nxos | Get tacacs-servers.
   cisco.nxos.nxos_command:
     commands:
-      - show run tacacs+ | include tacacs-server
+      - "show run tacacs+ | include tacacs-server"
   register: __tacacs_servers_output
 
 - name: configure_cisco.nxos.nxos | Remove obsolete tacacs-servers.
@@ -40,7 +40,7 @@
     - name: configure_cisco.nxos.nxos | Remove obsolete tacacs-servers.
       cisco.nxos.nxos_config:
         lines:
-          - no tacacs-server host {{ tacacs_item.split(' ')[2] }}
+          - "no tacacs-server host {{ tacacs_item.split(' ')[2] }}"
       when: tacacs_item.split(' ')[2] is not in (tacacs_servers | map(attribute='ip'))
       loop: "{{ __tacacs_servers_output['stdout_lines'][0] }}"
       loop_control:

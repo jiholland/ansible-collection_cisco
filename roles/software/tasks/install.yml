@@ -10,14 +10,14 @@
     - name: install | Set boot variable. Copy running-config startup-config.
       cisco.ios.ios_config:
         lines:
-          - boot system flash:{{ software_image }}
+          - "boot system flash:{{ software_image }}"
         save_when: always
 
     - name: install | Install compliant IOS and reboot.
       cisco.ios.ios_command:
         commands:
-          - command: reload reason Upgrade {{ ansible_facts['net_system'] }} to {{ software_version }}
-            prompt: Proceed with reload
+          - command: "reload reason Upgrade {{ ansible_facts['net_system'] }} to {{ software_version }}"
+            prompt: "Proceed with reload"
             answer: "\r"
       changed_when: true
 
@@ -36,15 +36,15 @@
     - name: install | Set boot variable and enable auto-boot. Copy running-config startup-config.
       cisco.ios.ios_config:
         lines:
-          - no boot system all
-          - boot system flash:packages.conf
-          - no boot manual
+          - "no boot system all"
+          - "boot system flash:packages.conf"
+          - "no boot manual"
         save_when: always
 
     - name: install | Install compliant OS and reboot.
       cisco.ios.ios_command:
         commands:
-          - install add file flash:{{ software_image }} activate commit prompt-level none
+          - "install add file flash:{{ software_image }} activate commit prompt-level none"
       when: software_issu is eq('no')
       changed_when: true
       vars:
@@ -54,7 +54,7 @@
     - name: install | Install compliant OS using ISSU.
       cisco.ios.ios_command:
         commands:
-          - install add file flash:{{ software_image }} activate issu commit
+          - "install add file flash:{{ software_image }} activate issu commit"
       when: software_issu is eq('yes')
       changed_when: true
       vars:
@@ -120,6 +120,6 @@
     - name: install | Assert that the software upgrade succeeded.
       ansible.builtin.assert:
         that:
-          - ansible_facts['net_version'] is ansible.builtin.version(software_version)
-        success_msg: Upgrade to {{ software_version }} was successful.
-        fail_msg: Unable to upgrade. Device is running {{ ansible_facts['net_version'] }}. Expected {{ software_version }}.
+          - "ansible_facts['net_version'] is ansible.builtin.version(software_version)"
+        success_msg: "Upgrade to {{ software_version }} was successful."
+        fail_msg: "Unable to upgrade. Device is running {{ ansible_facts['net_version'] }}. Expected {{ software_version }}."

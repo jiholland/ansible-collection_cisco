@@ -96,3 +96,14 @@ releases:
     fragments:
     - fix.yml
     release_date: '2024-03-05'
+  24.4.0:
+    changes:
+      bugfixes:
+      - backup role - check_mode for handler
+      minor_changes:
+      - all roles - use quotes for user-side strings such as descriptions, names,
+        and messages
+    fragments:
+    - backup.yml
+    - quotes.yml
+    release_date: '2024-04-05'

@@ -4,6 +4,10 @@ objects:
       description: null
       name: backup
       version_added: null
+    interface_description:
+      description: null
+      name: interface_description
+      version_added: null
     software:
       description: null
       name: software
@@ -28,4 +32,4 @@ plugins:
   strategy: {}
   test: {}
   vars: {}
-version: 24.3.0
+version: 24.4.0

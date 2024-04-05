@@ -1,6 +1,7 @@
 ---
 # defaults file for interface_description
 
+# Timeout for gathering facts.
 interface_description_timeout: 60
 
 interface_description_ios: "{{ lookup('ansible.builtin.template', 'interface_description_ios.j2') | ansible.builtin.from_yaml }}"

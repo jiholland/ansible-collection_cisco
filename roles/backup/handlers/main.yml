@@ -7,9 +7,9 @@
     cmd: "{{ backup_item }}"
     chdir: "{{ __backup_temp_dir_output['path'] }}/{{ ansible_facts['date_time']['date'] }}"
   loop:
-    - git add .
-    - git commit -m 'Backup created at {{ ansible_facts['date_time']['date'] }}.'
-    - git push origin {{ backup_git_version }}
+    - "git add ."
+    - "git commit -m 'Backup created at {{ ansible_facts['date_time']['date'] }}.'"
+    - "git push origin {{ backup_git_version }}"
   loop_control:
     loop_var: backup_item
   changed_when: true
