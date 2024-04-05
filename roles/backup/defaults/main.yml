@@ -7,6 +7,6 @@ backup_temp_dir: /tmp
 backup_git_version: main
 backup_git_accept_newhostkey: true
 
-backup_cron_weekday: '0'  # Sunday
-backup_cron_hour: '2'
-backup_cron_minute: '0'
+backup_cron_weekday: 0  # Sunday
+backup_cron_hour: 2
+backup_cron_minute: 0

@@ -2,9 +2,9 @@
 galaxy_info:
   role_name: interface_description
   author: Jørn Ivar Holland
-  description: Set interface description based on CDP and LLDP.
+  description: "Set interface description based on CDP and LLDP."
   license: BSD-3-Clause
-  min_ansible_version: '2.15'
+  min_ansible_version: "2.15"
   platforms:
     - name: IOS
       versions:

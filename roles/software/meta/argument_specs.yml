@@ -14,12 +14,12 @@ argument_specs:
         required: true
 
       software_server:
-        description: The server where the image are stored.
+        description: "The server where the image are stored."
         type: str
         required: true
 
       software_issu:
-        description: Install using In Service Software Upgrade (ISSU) or not.
+        description: "Install using In Service Software Upgrade (ISSU) or not."
         type: str
         default: "no"
         choices:

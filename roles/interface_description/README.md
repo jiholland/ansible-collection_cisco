@@ -12,6 +12,7 @@ Requirements
 Role Variables
 --------------
 
+- interface_description_timeout
 - interface_description_ios
 - interface_description_nxos
 

@@ -4,22 +4,29 @@
 # software_version: 17.06.05
 # software_image: cat9k_iosxe.17.06.05.SPA.bin
 
+# VRF used to reach the server hosting the software image.
 # software_vrf: management
 
+# The server where the image are stored.
 # software_server: 192.0.2.10
 
+# Path to software image when using scp.
 software_server_path: /var/lib/tftpboot
 software_server_user: "{{ ansible_user }}"
 software_server_password: "{{ ansible_password }}"
 
+# Timeout defaults.
 software_upload_timeout: 3600
 software_install_timeout: "{{ (software_issu is eq('no')) | ansible.builtin.ternary('1080', '1800') }}"
 software_install_rescue_timeout: 180
 software_reboot_delay: 30
 software_reboot_timeout: 900
 
+# Upgrade using In Service Software Upgrade (ISSU) - options are "yes" or "no".
 software_issu: "no"
 
 # Used when scheduling the upgrade.
 software_playbook_name: software_upgrade_playbook.yml
+
+# Target when scheduling the upgrade.
 software_target: "{{ target }}"

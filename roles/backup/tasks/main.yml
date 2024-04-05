@@ -13,7 +13,7 @@
 - name: Create temporary backup directory.
   ansible.builtin.tempfile:
     path: "{{ backup_temp_dir }}"
-    prefix: ansible_backup_
+    prefix: "ansible_backup_"
     state: directory
   delegate_to: localhost
   run_once: true
@@ -46,8 +46,8 @@
 - name: Schedule backup using cron.
   tags: [never, backup_schedule]
   ansible.builtin.cron:
-    name: Backup running-config to git
-    job: cd {{ playbook_dir }} && ansible-playbook playbook_network_backup.yml  -e 'target={{ target }}'
+    name: "Backup running-config to git"
+    job: "cd {{ playbook_dir }} && ansible-playbook playbook_network_backup.yml  -e 'target={{ target }}'"
     weekday: "{{ backup_cron_weekday }}"
     hour: "{{ backup_cron_hour }}"
     minute: "{{ backup_cron_minute }}"

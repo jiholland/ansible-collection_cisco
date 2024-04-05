@@ -16,8 +16,3 @@ argument_specs:
       backup_git_accept_newhostkey:
         type: bool
         default: true
-
-      backup_git_config:
-        description: Used for Ansible automation hub.
-        type: list
-        elements: dict

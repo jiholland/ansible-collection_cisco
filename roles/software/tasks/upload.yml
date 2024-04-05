@@ -17,8 +17,8 @@
     - name: upload | Remove inactive software.
       cisco.ios.ios_command:
         commands:
-          - command: install remove inactive
-            prompt: Do you want to remove the above files
+          - command: "install remove inactive"
+            prompt: "Do you want to remove the above files"
             answer: y
       when: ansible_facts['net_iostype'] is eq('IOS-XE')
       changed_when: true
@@ -29,13 +29,13 @@
     - name: upload | Ensure maximum blocksize for TFTP.
       cisco.ios.ios_config:
         lines:
-          - ip tftp blocksize 8192
+          - "ip tftp blocksize 8192"
 
     - name: upload | Upload compliant software image.
       cisco.ios.ios_command:
         commands:
-          - command: copy tftp://{{ software_server }}/{{ software_image }} flash:/
-            prompt: Destination filename
+          - command: "copy tftp://{{ software_server }}/{{ software_image }} flash:/"
+            prompt: "Destination filename"
             answer: "\r"
       when: software_vrf is undefined
       changed_when: true
@@ -46,8 +46,8 @@
     - name: upload | Upload compliant software image using vrf.
       cisco.ios.ios_command:
         commands:
-          - command: copy tftp://{{ software_server }}/{{ software_image }} flash:/ vrf {{ software_vrf }}
-            prompt: Destination filename
+          - command: "copy tftp://{{ software_server }}/{{ software_image }} flash:/ vrf {{ software_vrf }}"
+            prompt: "Destination filename"
             answer: "\r"
       when: software_vrf is defined
       changed_when: true
