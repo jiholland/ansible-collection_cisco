@@ -4,6 +4,14 @@ Test.Test Release Notes
 
 .. contents:: Topics
 
+v24.4.2
+=======
+
+Minor Changes
+-------------
+
+- software role - removed old tasks files.
+
 v24.4.1
 =======
 
