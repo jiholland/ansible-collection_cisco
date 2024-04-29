@@ -107,3 +107,12 @@ releases:
     - backup.yml
     - quotes.yml
     release_date: '2024-04-05'
+  24.4.1:
+    changes:
+      minor_changes:
+      - software role - improve arg_spec
+      - software role - move some defaults to vars
+      - software role - use scp instead of tftp for file transfer
+    fragments:
+    - software.yml
+    release_date: '2024-04-29'

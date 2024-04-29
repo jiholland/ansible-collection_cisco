@@ -1,0 +1,8 @@
+---
+# vars file for software
+
+__software_install_rescue_timeout: 180
+
+__software_reboot_delay: 30
+
+__software_reboot_timeout: 900
