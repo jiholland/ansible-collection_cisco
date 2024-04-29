@@ -6,17 +6,48 @@ argument_specs:
     options:
 
       software_version:
+        description: "The software version."
         type: str
         required: true
 
       software_image:
+        description: "The software image name."
         type: str
         required: true
 
+      software_vrf:
+        description: "VRF used to reach the software_server."
+        type: str
+
       software_server:
-        description: "The server where the image are stored."
+        description: "The server where the image is stored."
         type: str
         required: true
+
+      software_path:
+        description: "Path to software image on the scp-server."
+        type: str
+        default: "/var/lib/tftpboot"
+
+      software_user:
+        description: "Credentials used to for authentication to the software_server."
+        type: str
+        default: "{{ ansible_user }}"
+
+      software_password:
+        description: "Credentials used to for authentication to the software_server."
+        type: str
+        default: "{{ ansible_user }}"
+
+      software_upload_bulk_mode:
+        description: "Use ip ssh bulk-mode (ios) or k-stack (nxos)."
+        type: bool
+        default: false
+
+      software_upload_timeout:
+        description: "Timeout for uploading the image."
+        type: int
+        default: 3600
 
       software_issu:
         description: "Install using In Service Software Upgrade (ISSU) or not."
@@ -25,3 +56,8 @@ argument_specs:
         choices:
           - "no"
           - "yes"
+
+      software_install_timeout:
+        description: "Timeout for the installation."
+        type: int
+        default: 1080

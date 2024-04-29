@@ -1,0 +1,7 @@
+---
+# handlers file for software
+
+- name: Disable ip ssh bulk-mode.
+  cisco.ios.ios_config:
+    lines:
+      - "no ip ssh bulk-mode"

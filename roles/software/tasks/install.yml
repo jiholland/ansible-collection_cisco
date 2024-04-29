@@ -1,5 +1,5 @@
 ---
-# tasks file for sofware
+# tasks file for software
 
 - name: install | Install IOS.
   when:
@@ -23,8 +23,8 @@
 
     - name: install | Wait for device to reboot.
       ansible.builtin.wait_for_connection:
-        delay: "{{ software_reboot_delay }}"
-        timeout: "{{ software_reboot_timeout }}"
+        delay: "{{ __software_reboot_delay }}"
+        timeout: "{{ __software_reboot_timeout }}"
 
 
 - name: install | Install IOS-XE.
@@ -44,18 +44,7 @@
     - name: install | Install compliant OS and reboot.
       cisco.ios.ios_command:
         commands:
-          - "install add file flash:{{ software_image }} activate commit prompt-level none"
-      when: software_issu is eq('no')
-      changed_when: true
-      vars:
-        ansible_command_timeout: "{{ software_install_timeout }}"
-        ansible_connect_timeout: "{{ software_install_timeout }}"
-
-    - name: install | Install compliant OS using ISSU.
-      cisco.ios.ios_command:
-        commands:
-          - "install add file flash:{{ software_image }} activate issu commit"
-      when: software_issu is eq('yes')
+          - "install add file flash:{{ software_image }} activate {{ (software_issu is eq('yes')) | ternary('issu commit', 'commit prompt-leve none') }}"
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_install_timeout }}"
@@ -65,14 +54,14 @@
 
     - name: install | Sleep to recover.
       ansible.builtin.wait_for:
-        timeout: "{{ software_install_rescue_timeout }}"
+        timeout: "{{ __software_install_rescue_timeout }}"
 
   always:
 
     - name: install | Wait for device to reboot.
       ansible.builtin.wait_for_connection:
-        delay: "{{ software_reboot_delay }}"
-        timeout: "{{ software_reboot_timeout }}"
+        delay: "{{ __software_reboot_delay }}"
+        timeout: "{{ __software_reboot_timeout }}"
 
 
 - name: install | Install NXOS.
@@ -95,14 +84,14 @@
 
     - name: install | Sleep to recover.
       ansible.builtin.wait_for:
-        timeout: "{{ software_install_rescue_timeout }}"
+        timeout: "{{ __software_install_rescue_timeout }}"
 
   always:
 
     - name: install | Wait for device to reboot.
       ansible.builtin.wait_for_connection:
-        delay: "{{ software_reboot_delay }}"
-        timeout: "{{ software_reboot_timeout }}"
+        delay: "{{ __software_reboot_delay }}"
+        timeout: "{{ __software_reboot_timeout }}"
 
 
 - name: install | Assert the software upgrade.
@@ -117,9 +106,8 @@
       retries: 5
       delay: 10
 
-    - name: install | Assert that the software upgrade succeeded.
+    - name: install | Assert the software version.
       ansible.builtin.assert:
         that:
-          - "ansible_facts['net_version'] is ansible.builtin.version(software_version)"
-        success_msg: "Upgrade to {{ software_version }} was successful."
-        fail_msg: "Unable to upgrade. Device is running {{ ansible_facts['net_version'] }}. Expected {{ software_version }}."
+          - ansible_facts['net_version'] is ansible.builtin.version(software_version)
+        quiet: true

@@ -19,37 +19,37 @@
         commands:
           - command: "install remove inactive"
             prompt: "Do you want to remove the above files"
-            answer: y
-      when: ansible_facts['net_iostype'] is eq('IOS-XE')
+            answer: "y"
+      when:
+        - not ansible_check_mode
+        - ansible_facts['net_iostype'] is eq('IOS-XE')
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_upload_timeout }}"
         ansible_connect_timeout: "{{ software_upload_timeout }}"
 
-    - name: upload | Ensure maximum blocksize for TFTP.
+    - name: upload | Ensure bulk-mode is enabled for ssh.
       cisco.ios.ios_config:
         lines:
-          - "ip tftp blocksize 8192"
+          - "ip ssh bulk-mode"
+      when:
+        - software_upload_bulk_mode | ansible.builtin.bool
+        - ansible_facts['net_iostype'] is eq('IOS-XE')
+      notify: Disable ip ssh bulk-mode.
 
     - name: upload | Upload compliant software image.
-      cisco.ios.ios_command:
-        commands:
-          - command: "copy tftp://{{ software_server }}/{{ software_image }} flash:/"
-            prompt: "Destination filename"
-            answer: "\r"
-      when: software_vrf is undefined
-      changed_when: true
-      vars:
-        ansible_command_timeout: "{{ software_upload_timeout }}"
-        ansible_connect_timeout: "{{ software_upload_timeout }}"
-
-    - name: upload | Upload compliant software image using vrf.
-      cisco.ios.ios_command:
-        commands:
-          - command: "copy tftp://{{ software_server }}/{{ software_image }} flash:/ vrf {{ software_vrf }}"
-            prompt: "Destination filename"
-            answer: "\r"
-      when: software_vrf is defined
+      ansible.netcommon.cli_command:
+        command: >-
+          copy scp://{{ software_user }}@{{ software_server }}/{{ software_path }}/{{ software_image }}
+          flash:/ {{ (software_vrf is defined) | ternary('vrf ' + software_vrf | default(omit), '') }}
+        prompt:
+          - "Destination filename"
+          - "Password"
+        answer:
+          - "{{ software_image }}"
+          - "{{ software_password }}"
+        check_all: true
+      no_log: true
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_upload_timeout }}"
@@ -69,10 +69,11 @@
     - name: upload | Upload compliant software image.
       cisco.nxos.nxos_file_copy:
         file_pull: true
+        file_pull_kstack: "{{ software_upload_bulk_mode }}"
         file_pull_timeout: "{{ software_upload_timeout }}"
-        remote_file: "{{ software_server_path }}/{{ software_image }}"
+        remote_file: "{{ software_path }}/{{ software_image }}"
         remote_scp_server: "{{ software_server }}"
-        remote_scp_server_user: "{{ software_server_user }}"
-        remote_scp_server_password: "{{ software_server_password }}"
+        remote_scp_server_user: "{{ software_user }}"
+        remote_scp_server_password: "{{ software_password }}"
         vrf: "{{ software_vrf }}"
       when: __software_bootflash_output['stdout'][0] is not ansible.builtin.search(software_image)

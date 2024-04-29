@@ -32,4 +32,4 @@ plugins:
   strategy: {}
   test: {}
   vars: {}
-version: 24.4.0
+version: 24.4.1

@@ -4,6 +4,16 @@ Test.Test Release Notes
 
 .. contents:: Topics
 
+v24.4.1
+=======
+
+Minor Changes
+-------------
+
+- software role - improve arg_spec
+- software role - move some defaults to vars
+- software role - use scp instead of tftp for file transfer
+
 v24.4.0
 =======
 
