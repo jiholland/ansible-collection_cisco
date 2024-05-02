@@ -95,6 +95,7 @@
 
 
 - name: install | Assert the software upgrade.
+  when: not ansible_check_mode
   block:
 
     - name: install | Gather facts.
