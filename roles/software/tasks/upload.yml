@@ -17,6 +17,7 @@
         answer: "y"
   when:
     - not ansible_check_mode
+    - ansible_network_os is eq('cisco.ios.ios')
     - ansible_facts['net_iostype'] is eq('IOS-XE')
   changed_when: true
   vars:
