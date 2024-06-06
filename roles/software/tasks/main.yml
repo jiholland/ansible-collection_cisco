@@ -2,18 +2,20 @@
 # tasks file for software
 
 - name: Gather facts.
-  tags: upload
   cisco.ios.ios_facts:
     gather_subset:
       - min
+  tags:
+    - upload
 
 - name: Include tasks for uploading software to target.
-  tags: upload
   ansible.builtin.include_tasks:
     file: upload.yml
     apply:
       tags:
         - upload
+  tags:
+    - upload
   when: ansible_facts['net_version'] is not ansible.builtin.version(software_version)
 
 - name: Include tasks for upgrading software.

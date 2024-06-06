@@ -1,0 +1,7 @@
+---
+- name: Upgrade software to compliant version.
+  gather_facts: false
+  hosts: "{{ target }}"
+  strategy: ansible.builtin.free
+  roles:
+    - jiholland.cisco.software

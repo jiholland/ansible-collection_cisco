@@ -1,0 +1,6 @@
+---
+- name: Ensure tacacs authentication.
+  gather_facts: false
+  hosts: "{{ target }}"
+  roles:
+    - jiholland.cisco.tacacs

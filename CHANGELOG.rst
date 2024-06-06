@@ -4,6 +4,17 @@ Test.Test Release Notes
 
 .. contents:: Topics
 
+v24.6.0
+=======
+
+Minor Changes
+-------------
+
+- playbooks - added playbooks
+- software role - check-mode for image upload
+- software role - no check-mode for installation assert
+- software role - replaced handler for ip ssh bulk-mode with always in block
+
 v24.4.2
 =======
 

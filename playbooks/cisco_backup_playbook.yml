@@ -1,0 +1,8 @@
+---
+- name: Backup config from target to git.
+  gather_facts: false
+  hosts: "{{ target }}"
+  roles:
+    - role: jiholland.cisco.backup
+      vars:
+        backup_git_repo: "git@gitlab.example.com:network-management/ansible-backup.git"

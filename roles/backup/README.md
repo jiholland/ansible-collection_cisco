@@ -17,6 +17,7 @@ Role Variables
 - backup_git_repo
 - backup_git_version
 - backup_git_accept_newhostkey
+- backup_git_config
 - backup_cron_weekday
 - backup_cron_hour
 - backup_cron_minute
@@ -33,11 +34,10 @@ Example Playbook
 - name: Backup config from target to git.
   gather_facts: false
   hosts: "{{ target }}"
-  vars:
-    backup_git_repo: git@gitlab.example.com:network-management/ansible-backup.git
-
   roles:
-    - jiholland.cisco.backup
+    - role: jiholland.cisco.backup
+      vars:
+        backup_git_repo: git@gitlab.example.com:network-management/ansible-backup.git
 ```
 📅 Use tag **backup_schedule** to schedule the backup using cron.
 
@@ -49,4 +49,4 @@ BSD
 Author Information
 ------------------
 
-Jørn Ivar Holland
+Jørn Ivar Holland=)

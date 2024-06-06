@@ -7,7 +7,7 @@ Requirements
 ------------
 
 💿 [Cisco IOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/ios)<br>
-💿 [Cisco NXOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/nxos)<br>
+💿 [Cisco NXOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/nxos)
 
 Role Variables
 --------------
@@ -25,12 +25,11 @@ None.
 
 Example Playbook
 ----------------
-```YAML
+```yaml
 ---
 - name: Ensure tacacs authentication.
   gather_facts: false
   hosts: "{{ target }}"
-
   roles:
     - jiholland.cisco.tacacs
 ```
