@@ -1,7 +1,7 @@
 🎚️ jiholland.software
 =====================
 
-Upgrade software on Cisco Catalyst and Nexus devices.
+Upgrade software on Cisco Catalyst and Nexus devices.<br>
 
 Requirements
 ------------
@@ -37,7 +37,6 @@ Example Playbook
   gather_facts: false
   hosts: "{{ target }}"
   strategy: ansible.builtin.free
-
   roles:
     - jiholland.cisco.software
 ```
