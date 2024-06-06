@@ -1,5 +1,0 @@
----
-minor_changes:
-  - software role - check-mode for image upload
-  - software role - no check-mode for installation assert
-  - software role - replaced handler for ip ssh bulk-mode with always in block
