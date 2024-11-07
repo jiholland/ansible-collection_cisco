@@ -9,26 +9,25 @@
   when: ansible_network_os is eq('cisco.ios.ios')
   register: __software_flash_output
 
-- name: upload | Remove inactive software.
-  cisco.ios.ios_command:
-    commands:
-      - command: "install remove inactive"
-        prompt: "Do you want to remove the above files"
-        answer: "y"
-  when:
-    - not ansible_check_mode
-    - ansible_network_os is eq('cisco.ios.ios')
-    - ansible_facts['net_iostype'] is eq('IOS-XE')
-  changed_when: true
-  vars:
-    ansible_command_timeout: "{{ software_upload_timeout }}"
-    ansible_connect_timeout: "{{ software_upload_timeout }}"
-
 - name: upload | Upload software image.
   when:
     - ansible_network_os is eq('cisco.ios.ios')
     - __software_flash_output['stdout'][0] is not ansible.builtin.search(software_image)
   block:
+
+    - name: upload | Remove inactive software.
+      cisco.ios.ios_command:
+        commands:
+          - command: "install remove inactive"
+            prompt: "Do you want to remove the above files"
+            answer: "y"
+      when:
+        - not ansible_check_mode
+        - ansible_facts['net_iostype'] is eq('IOS-XE')
+      changed_when: true
+      vars:
+        ansible_command_timeout: "{{ software_upload_timeout }}"
+        ansible_connect_timeout: "{{ software_upload_timeout }}"
 
     - name: upload | Ensure bulk-mode is enabled for ssh before image upload.
       cisco.ios.ios_config:
