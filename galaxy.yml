@@ -24,7 +24,6 @@ tags:
 dependencies:
   cisco.ios: ">=5.0.0"
   cisco.nxos: ">=5.0.0"
-  community.general: ">=7.0.0"
 
 repository: "https://github.com/jiholland/ansible-collection_cisco"
 issues: "https://github.com/jiholland/ansible-collection_cisco/issues"
