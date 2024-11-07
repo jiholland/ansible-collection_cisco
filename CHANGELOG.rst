@@ -4,6 +4,19 @@ Test.Test Release Notes
 
 .. contents:: Topics
 
+v24.11.0
+========
+
+Minor Changes
+-------------
+
+- software role - Check mode for installing software.
+
+Bugfixes
+--------
+
+- software role - Remove inactive software condition bugfix.
+
 v24.6.0
 =======
 

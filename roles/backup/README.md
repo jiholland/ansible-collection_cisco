@@ -8,7 +8,6 @@ Requirements
 
 💿 [Cisco IOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/ios)<br>
 💿 [Cisco NXOS Collection](https://galaxy.ansible.com/ui/repo/published/cisco/nxos)<br>
-💿 [Community General](https://galaxy.ansible.com/ui/repo/published/community/general)
 
 Role Variables
 --------------
@@ -17,7 +16,6 @@ Role Variables
 - backup_git_repo
 - backup_git_version
 - backup_git_accept_newhostkey
-- backup_git_config
 - backup_cron_weekday
 - backup_cron_hour
 - backup_cron_minute

@@ -20,6 +20,7 @@
             prompt: "Proceed with reload"
             answer: "\r"
       changed_when: true
+      when: not ansible_check_mode
 
     - name: install | Wait for device to reboot.
       ansible.builtin.wait_for_connection:
@@ -46,6 +47,7 @@
         commands:
           - "install add file flash:{{ software_image }} activate {{ (software_issu is eq('yes')) | ternary('issu commit', 'commit prompt-leve none') }}"
       changed_when: true
+      when: not ansible_check_mode
       vars:
         ansible_command_timeout: "{{ software_install_timeout }}"
         ansible_connect_timeout: "{{ software_install_timeout }}"

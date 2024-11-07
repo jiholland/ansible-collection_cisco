@@ -1,13 +1,13 @@
 ---
 namespace: jiholland
 name: cisco
-version: 24.6.0
+version: 24.11.0
 readme: README.md
 
 authors:
   - Jørn Ivar Holland
 
-description: This collection includes helpful Ansible roles and content to help with Cisco network automation.
+description: "This collection includes helpful Ansible roles and content to help with Cisco network automation."
 
 license:
   - BSD-3-Clause
@@ -22,12 +22,10 @@ tags:
   - tacacs
 
 dependencies:
-  ansible.posix: ">=1.5.0"
   cisco.ios: ">=5.0.0"
   cisco.nxos: ">=5.0.0"
-  community.general: ">=7.0.0"
 
-repository: https://github.com/jiholland/ansible-collection_cisco
-issues: https://github.com/jiholland/ansible-collection_cisco/issues
+repository: "https://github.com/jiholland/ansible-collection_cisco"
+issues: "https://github.com/jiholland/ansible-collection_cisco/issues"
 
 build_ignore: []

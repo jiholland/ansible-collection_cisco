@@ -66,6 +66,15 @@ releases:
     fragments:
     - fix.yml
     release_date: '2024-02-02'
+  24.11.0:
+    changes:
+      bugfixes:
+      - software role - Remove inactive software condition bugfix.
+      minor_changes:
+      - software role - Check mode for installing software.
+    fragments:
+    - bugfix.yml
+    release_date: '2024-11-07'
   24.2.0:
     changes:
       minor_changes:
