@@ -16,11 +16,13 @@ Role Variables
 - software_image
 - software_vrf
 - software_server
+- software_facts_throttle
 - software_path
 - software_user
 - software_password
 - software_upload_bulk_mode
 - software_upload_timeout
+- software_upload_throttle
 - software_issu
 - software_install_timeout
 

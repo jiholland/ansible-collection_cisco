@@ -12,6 +12,7 @@
 - name: upload | Upload software image.
   when:
     - ansible_network_os is eq('cisco.ios.ios')
+    - ansible_facts['net_iostype'] is eq('IOS-XE')
     - __software_flash_output['stdout'][0] is not ansible.builtin.search(software_image)
   block:
 
@@ -21,9 +22,7 @@
           - command: "install remove inactive"
             prompt: "Do you want to remove the above files"
             answer: "y"
-      when:
-        - not ansible_check_mode
-        - ansible_facts['net_iostype'] is eq('IOS-XE')
+      when: not ansible_check_mode
       changed_when: true
       vars:
         ansible_command_timeout: "{{ software_upload_timeout }}"
@@ -33,9 +32,7 @@
       cisco.ios.ios_config:
         lines:
           - "ip ssh bulk-mode 131072"
-      when:
-        - software_upload_bulk_mode | ansible.builtin.bool
-        - ansible_facts['net_iostype'] is eq('IOS-XE')
+      when: software_upload_bulk_mode | ansible.builtin.bool
 
     - name: upload | Upload compliant software image.
       ansible.netcommon.cli_command:
@@ -51,7 +48,7 @@
         check_all: true
       no_log: true
       changed_when: true
-      when: not ansible_check_mode
+      throttle: "{{ software_upload_throttle }}"
       vars:
         ansible_command_timeout: "{{ software_upload_timeout }}"
         ansible_connect_timeout: "{{ software_upload_timeout }}"
@@ -65,7 +62,33 @@
       when:
         - not ansible_check_mode
         - software_upload_bulk_mode | ansible.builtin.bool
-        - ansible_facts['net_iostype'] is eq('IOS-XE')
+
+- name: upload | Upload software image.
+  when:
+    - ansible_network_os is eq('cisco.ios.ios')
+    - ansible_facts['net_iostype'] is eq('IOS')
+    - __software_flash_output['stdout'][0] is not ansible.builtin.search(software_image)
+  block:
+
+    - name: upload | Ensure tftp blocksize before image upload.
+      cisco.ios.ios_config:
+        lines:
+          - "ip tftp blocksize 8192"
+      when: software_upload_bulk_mode | ansible.builtin.bool
+
+    - name: upload | Upload compliant software image.
+      cisco.ios.ios_command:
+        commands:
+          - command: >-
+              copy tftp://{{ software_server }}/{{ software_image }}
+              flash:/ {{ (software_vrf is defined) | ternary('vrf ' + software_vrf | default(omit), '') }}
+            prompt: "Destination filename"
+            answer: "{{ software_image }}"
+      changed_when: true
+      throttle: "{{ software_upload_throttle }}"
+      vars:
+        ansible_command_timeout: "{{ software_upload_timeout }}"
+        ansible_connect_timeout: "{{ software_upload_timeout }}"
 
 
 - name: upload | Upload software image.
@@ -90,3 +113,4 @@
         remote_scp_server_password: "{{ software_password }}"
         vrf: "{{ software_vrf }}"
       when: __software_bootflash_output['stdout'][0] is not ansible.builtin.search(software_image)
+      throttle: "{{ software_upload_throttle }}"

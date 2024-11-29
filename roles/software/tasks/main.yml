@@ -7,6 +7,7 @@
       - min
   tags:
     - upload
+  throttle: "{{ software_facts_throttle }}"
 
 - name: Include tasks for uploading software to target.
   ansible.builtin.include_tasks:

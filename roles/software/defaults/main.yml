@@ -9,6 +9,8 @@
 
 # software_server: 192.0.2.10
 
+software_facts_throttle: 20
+
 software_path: "/var/lib/tftpboot"
 
 software_user: "{{ ansible_user }}"
@@ -18,6 +20,8 @@ software_password: "{{ ansible_password }}"
 software_upload_bulk_mode: true
 
 software_upload_timeout: 3600
+
+software_upload_throttle: 15
 
 software_issu: "no"
 
