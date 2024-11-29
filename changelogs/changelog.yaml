@@ -75,6 +75,14 @@ releases:
     fragments:
     - bugfix.yml
     release_date: '2024-11-07'
+  24.11.1:
+    changes:
+      bugfixes:
+      - software role - added throttle
+      - software role - ios tftp upload
+    fragments:
+    - fix.yml
+    release_date: '2024-11-29'
   24.2.0:
     changes:
       minor_changes:

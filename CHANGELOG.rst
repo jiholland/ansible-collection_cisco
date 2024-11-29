@@ -4,6 +4,15 @@ Test.Test Release Notes
 
 .. contents:: Topics
 
+v24.11.1
+========
+
+Bugfixes
+--------
+
+- software role - added throttle
+- software role - ios tftp upload
+
 v24.11.0
 ========
 

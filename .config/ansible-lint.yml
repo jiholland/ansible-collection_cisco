@@ -6,9 +6,6 @@ offline: true
 extra_vars:
   target: foobar
 
-skip_list:
-  - fqcn[canonical]
-
 enable_list:
   - empty-string-compare # opt-in
   - loop-var-prefix # opt-in

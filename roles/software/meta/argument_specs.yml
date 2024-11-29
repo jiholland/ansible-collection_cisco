@@ -24,6 +24,11 @@ argument_specs:
         type: str
         required: true
 
+      software_facts_throttle:
+        description: "Restrict number of works for facts gathering to this value."
+        type: int
+        default: 20
+
       software_path:
         description: "Path to software image on the scp-server."
         type: str
@@ -32,12 +37,12 @@ argument_specs:
       software_user:
         description: "Credentials used to for authentication to the software_server."
         type: str
-        default: "{{ ansible_user }}"
+        default: "ansible_user"
 
       software_password:
         description: "Credentials used to for authentication to the software_server."
         type: str
-        default: "{{ ansible_user }}"
+        default: "ansible_password"
 
       software_upload_bulk_mode:
         description: "Use ip ssh bulk-mode (ios) or k-stack (nxos)."
@@ -48,6 +53,11 @@ argument_specs:
         description: "Timeout for uploading the image."
         type: int
         default: 3600
+
+      software_upload_throttle:
+        description: "Restrict number of works when uploading software image to this value."
+        type: int
+        default: 10
 
       software_issu:
         description: "Install using In Service Software Upgrade (ISSU) or not."
