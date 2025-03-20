@@ -4,6 +4,16 @@ Test.Test Release Notes
 
 .. contents:: Topics
 
+v25.3.0
+=======
+
+Minor Changes
+-------------
+
+- all roles - bump min_ansible_version to 2.16
+- software role - do not remove ip ssh bulk
+- software role - remove no boot manual
+
 v24.11.1
 ========
 

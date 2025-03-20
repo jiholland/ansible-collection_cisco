@@ -150,3 +150,12 @@ releases:
     fragments:
     - fix.yml
     release_date: '2024-06-06'
+  25.3.0:
+    changes:
+      minor_changes:
+      - all roles - bump min_ansible_version to 2.16
+      - software role - do not remove ip ssh bulk
+      - software role - remove no boot manual
+    fragments:
+    - fix.yml
+    release_date: '2025-03-20'

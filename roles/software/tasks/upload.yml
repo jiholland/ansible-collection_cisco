@@ -28,7 +28,7 @@
         ansible_command_timeout: "{{ software_upload_timeout }}"
         ansible_connect_timeout: "{{ software_upload_timeout }}"
 
-    - name: upload | Ensure bulk-mode is enabled for ssh before image upload.
+    - name: upload | Ensure bulk-mode is enabled for ssh.
       cisco.ios.ios_config:
         lines:
           - "ip ssh bulk-mode 131072"
@@ -49,19 +49,11 @@
       no_log: true
       changed_when: true
       throttle: "{{ software_upload_throttle }}"
+      when: not ansible_check_mode
       vars:
         ansible_command_timeout: "{{ software_upload_timeout }}"
         ansible_connect_timeout: "{{ software_upload_timeout }}"
 
-  always:
-
-    - name: upload | Disable bulk-mode for ssh after image upload.
-      cisco.ios.ios_config:
-        lines:
-          - "no ip ssh bulk-mode"
-      when:
-        - not ansible_check_mode
-        - software_upload_bulk_mode | ansible.builtin.bool
 
 - name: upload | Upload software image.
   when:
@@ -74,7 +66,6 @@
       cisco.ios.ios_config:
         lines:
           - "ip tftp blocksize 8192"
-      when: software_upload_bulk_mode | ansible.builtin.bool
 
     - name: upload | Upload compliant software image.
       cisco.ios.ios_command:
