@@ -1,10 +1,11 @@
 ---
 galaxy_info:
+  namespace: jiholland
   role_name: software
   author: Jørn Ivar Holland
   description: "Upgrade software on Cisco Catalyst and Nexus devices."
   license: BSD-3-Clause
-  min_ansible_version: "2.15"
+  min_ansible_version: "2.16"
   platforms:
     - name: IOS
       version:

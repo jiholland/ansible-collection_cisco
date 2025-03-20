@@ -1,7 +1,7 @@
 ---
 namespace: jiholland
 name: cisco
-version: 24.11.1
+version: 25.3.0
 readme: README.md
 
 authors:

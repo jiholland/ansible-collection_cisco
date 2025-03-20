@@ -34,12 +34,11 @@
     - ansible_facts['net_iostype'] is eq('IOS-XE')
   block:
 
-    - name: install | Set boot variable and enable auto-boot. Copy running-config startup-config.
+    - name: install | Set boot variable. Copy running-config startup-config.
       cisco.ios.ios_config:
         lines:
           - "no boot system all"
           - "boot system flash:packages.conf"
-          - "no boot manual"
         save_when: always
 
     - name: install | Install compliant OS and reboot.
